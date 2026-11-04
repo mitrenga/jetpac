@@ -14,15 +14,10 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
  * The stripe animation is the tape one (pilot tone, data, and the screech of
  * a broken load), driven by TapeLoadingModel.
  *
- * ★ M6 settled what the game itself does with the border, and the answer is
- * almost nothing: GameInitialisation ($9963) does XOR A / OUT ($FE),A and no
- * other write of a colour to that port exists in the program — the sound
- * routines only knock it back to black. The one exception is the **pause**,
- * where $AC40 adds $04 to a counter every frame and makes the colour out of
- * bit 7 of it, so the border alternates blue and magenta every 32 frames until
- * SPACE is pressed again and $AC67 puts it back. That is driven from
- * roomModel.startPauseBorder(), because it belongs to the pause and not to the
- * border itself (data/global.json `border`).
+ * ★ The game itself does almost nothing with the border: $608A does
+ * XOR A / OUT ($FE),A before every level, so it is black, and nothing in the
+ * program sets another colour (gameModel.js). The pause has no border of its
+ * own either — the original has no pause screen at all (ZADANI chap. 10/4).
  */
 export class BorderEntity extends AbstractEntity {
 

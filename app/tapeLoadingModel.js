@@ -30,9 +30,8 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
  * then snaps into colour. See {@link ZXVideoRAMEntity}.
  *
  * ★ Jetpac's tape is **twelve blocks, all at standard ROM speed and none of
- * them encrypted** (sources/docs/tape_layout.md) — which is the opposite of
- * Sabre Wulf, where the loader is Speedlock and the code is negated. So there
- * is nothing here that cannot be replayed: a BASIC program of 376 bytes, the
+ * them encrypted** (sources/docs/tape_layout.md), so there is nothing here
+ * that cannot be replayed: a BASIC program of 376 bytes, the
  * SCREEN$ block `JPSP`, the 8192 bytes of the game, and three little blocks of
  * fifteen, one and two bytes (a routine that shifts the game four bytes down,
  * a `JP (HL)`, and two bytes of `FRAMES` the game checks before it will run at

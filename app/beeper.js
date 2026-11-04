@@ -8,8 +8,8 @@
  * (sources/docs/disasm_notes.md chap. 10): `$680D` makes a square wave whose
  * half-cycle is D `DJNZ` iterations and which repeats C times, and `$681E`
  * runs C from 8 up to $38 for the laser. There is no note table, no envelope
- * and **no music at all** — which is why this file is a tenth of the size of
- * Sabre Wulf's, and why the remake has one audio bus and one volume.
+ * and **no music at all** — which is why the remake has one audio bus and one
+ * volume.
  *
  * ★ And the four entry points **jump into the middle of the loop**, onto the
  * `DJNZ` at $6812, so the first half-cycle lasts however long whatever was

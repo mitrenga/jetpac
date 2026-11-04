@@ -18,26 +18,18 @@ const { GameAreaEntity } = await import('./gameAreaEntity.js?ver='+window.srcVer
 // begin code
 
 /**
- * Main menu, the same structure as the other ZX remakes — but with two items
- * the original itself has:
+ * Main menu, the same structure as the other ZX remakes, on the original's
+ * menu screen (black with the panel on it, GameAreaEntity.panelScreen) with
+ * the items below the panel where the original's JETPAC GAME SELECTION has
+ * them.
  *
- * - ★ **HALL OF FAME** (the screen itself keeps the original's heading
- *   ULTIMATE HALL OF FAME, $B346), because the original has one (six places, table at
- *   $B304). The original also flips the menu over to it by itself every
- *   sixteen seconds or so (CounterHallOfFame, $96B8, measured 823 / 802
- *   frames — data/global.json hallOfFame); the remake **does not** (decided
- *   2026-09-07, ZADANI chap. 6): its menu is something to browse, and a panel
- *   opening on top of it was never asked for. The hall of fame is an item.
- *
- * ★ Decided 2026-09-07 (ZADANI chap. 6): the menu is **one player only**
+ * ★ Decided 2026-09-18 (ZADANI chap. 10/4): the menu is **one player only**
  * (the original offers `1 PLAYER GAME` / `2 PLAYER GAME`; the worker and the
- * panel still know both, the menu asks for neither), there is **one volume**
- * (SOUNDS — the music goes over the same bus, a MUSIC slider went), and the remake's
- * own MAP OF THE WORLD, TRAINING SCREEN and PHYSICS SANDBOX are gone.
- *
- * What is the remake's own is the rest of the menu, the key remapping, the
- * options and the touch controls (ZADANI chap. 6). And unlike Underwurlde
- * there is a MUSIC slider, because Sabre Wulf has music.
+ * panel still know both, the menu asks for neither). The HALL OF FAME is the
+ * remake's own — the original has none, only the HI in the panel — and so is
+ * the rest of the menu: the player name, SOUNDS (one volume, Jetpac has no
+ * music), the key remapping and the touch controls in SETTINGS, SHOW TAPE
+ * LOADING and ABOUT GAME.
  *
  * The menu itself never touches the audio buses; items that need sound go
  * through ZXWaitForAudioEventEntity first when the browser wants a user
@@ -88,15 +80,13 @@ export class MenuModel extends AbstractModel {
       selectionClickColor: false,
       selection: selectionItem
     };
-    // the dialogs opened from the menu look like the ABOUT GAME panel
-    // (aboutModel.js): a black window with the title in bright red over the
-    // black middle of the jungle frame. The contents come from svision and are
+    // the dialogs opened from the menu: a black window with the title in
+    // bright red over the black screen below the panel. The contents come from svision and are
     // laid out for 200 x 124 px; the window has no frame, only the title bar,
     // so they get 192 x 117 — the right edge of the volume panel (MAX, +) and
     // of the keyboard loses up to 6 px, the bottom row moves up with the
-    // height. It fills cells 4-27 of the jungle frame in width and has the
-    // title on the same row as the about panel (36, 42, 184 x 126), with the
-    // same bottom edge at 168. What is not set here is the default of
+    // height. It fills cells 4-27 in width and has the title on the row of
+    // the menu's first item (y 42), with the bottom edge at 168. What is not set here is the default of
     // ZXDialogProperties (the look of Manic Miner)
     this.dialogProperties = ZXDialogProperties.merge({
       x: 32,
@@ -185,7 +175,7 @@ export class MenuModel extends AbstractModel {
     this.newVersionAvailable = false;
     // the window of the dialog open from the menu (openDialog), while it lasts
     this.dialogEntity = null;
-    // the jungle frame of the original's menu screen (RoomComposer.composeMainMenu)
+    // the original's menu screen: black with the panel on it (GameAreaEntity.panelScreen)
     this.screenEntity = null;
     this.gameInfoEntity = null;
   } // constructor
@@ -234,15 +224,12 @@ export class MenuModel extends AbstractModel {
       this.desktopEntity.addEntity(new TextEntity(this.desktopEntity, this.app.fonts.fonts5x5, 8, 8*8+16, this.desktopWidth-16, 40,
         'GAME DATA MISSING (data/sprites.json). RUN tools/dumpsprites.py.', ZXColor.brightGreen, false, {align: 'center', textWrap: true}));
     }
-    // inside the jungle frame: cells 4-27 x 5-20 are the black middle, 4 px
-    // kept free on either side
+    // below the panel: cells 4-27 x 5-20, 4 px kept free on either side
     this.menuEntity = new MenuEntity(this.desktopEntity, 36, 42, 184, 126, this.desktopEntity.bkColor, this.menuOptions, this, this.getMenuData);
     this.desktopEntity.addEntity(this.menuEntity);
 
-    // the version, centred in the ZX font on the bottom band of the jungle frame
-    // (rows 21-23); still a button, because a newer version on the server turns
-    // it into UPGRADE !
-    // black only behind the text, so the band keeps its jungle on both sides
+    // the version, centred in the ZX font on row 22; still a button, because
+    // a newer version on the server turns it into UPGRADE !
     var versionText = 'v'+this.app.version;
     var versionWidth = 14*8;                            // fourteen cells, centred
     this.versionEntity = new ButtonEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, (this.desktopWidth-versionWidth)/2, 176, versionWidth, 8, versionText, {id: 'upgradeApp'}, [], ZXColor.brightWhite, ZXColor.black, {align: 'center'});
@@ -326,7 +313,7 @@ export class MenuModel extends AbstractModel {
 
   /**
    * Opens a dialog from the menu: the window with the title (ZXDialogEntity)
-   * over the middle of the jungle frame, placed and coloured by the dialog
+   * over the black screen below the panel, placed and coloured by the dialog
    * properties, and the contents the factory makes for it, as the modal of
    * the desktop.
    * @param {string} title - The text of the title bar.
@@ -340,7 +327,7 @@ export class MenuModel extends AbstractModel {
     // original's screen instead of the version, like the hall of fame and the
     // about screen do; the version comes back when the dialog closes
     // (handleEvent, 'destroy' of the window)
-    this.versionEntity.setText('© 1984  A.C.G.');
+    this.versionEntity.setText('©1983 A.C.G.');
     this.versionEntity.setPenColor(ZXColor.brightWhite);
   } // openDialog
 

@@ -247,9 +247,9 @@ function main() {
   //
   // Vypadá to jako formalita a není: `GameModel.setControl()` neznámou akci
   // zahodí, takže překlep v `controlAction()` **nic nenahlásí** a jen přestane
-  // fungovat klávesa. Přesně tohle se stalo, když v modelu zůstala jména ze
-  // sabrewulfa (`up`, `down`, `sword`) — Jetman nelítal a nestřílel, a nikde
-  // nebyla chyba.
+  // fungovat klávesa. Přesně tohle se stalo, když v modelu zůstala jména
+  // převzatá z jiné hry (`up`, `down`, `sword`) — Jetman nelítal a nestřílel,
+  // a nikde nebyla chyba.
   const modelSource = fs.readFileSync(path.join(ROOT, 'app/gameModel.js'), 'utf8');
   const mapping = modelSource.slice(modelSource.indexOf('controlAction(key)'));
   const actions = [...mapping.slice(0, mapping.indexOf('} // controlAction'))

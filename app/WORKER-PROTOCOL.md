@@ -66,7 +66,7 @@ kolizi.
 | `players` | 1 nebo 2 — volba z menu, v originálu bit 0 bajtu `$5CF3`. |
 | `lives` | zásoba životů. ★ **Čtyři**: `$6316` zapíše `4` do `$5DF1` a přesně to ukazuje panel (`data/global.json`). |
 | `lives2` | ★ **Pět** pro druhého hráče (`$6324`). |
-| `hiScore` | nejvyšší skóre. ★ Originál žádnou vlastní síň slávy nemá, takže začíná na nule — na rozdíl od Sabre Wulfa, který si nese 102275. |
+| `hiScore` | nejvyšší skóre. ★ Originál žádnou vlastní síň slávy nemá, takže začíná na nule. |
 | `level` | číslo kola (`$5DF0`, počítá se od nuly). Rozhoduje, který nepřítel přiletí (`$6A64`), jak vypadá raketa a jaké jsou grafiky dílů. |
 | `global` | `data/global.json` — **šablony záznamů entit**, které si hra kopíruje na začátku života (`$6010` Jetman, `$6018` raketa a dva díly), a konstanty (`tools/mkglobal.py`). |
 
@@ -74,7 +74,7 @@ kolizi.
 
 | zpráva | pole | význam |
 |---|---|---|
-| `frame` | `pass`, `level`, `startDelay`, `entities[]`, `panel`, `controls`, `sounds[]` | jeden průchod. Posílá se po každém tiku. |
+| `frame` | `pass`, `level`, `startDelay`, `entities[]`, `panel`, `controls`, `events[]`, `sounds[]` | jeden průchod. Posílá se po každém tiku. |
 | `gameOver` | `score` | konec hry (M4/M5). |
 | `error` | `message` | chybějící data nebo rozbitý stav. |
 
@@ -87,7 +87,8 @@ kolizi.
 | `entities[]` | `{slot, type, left, x, y, attr, flags, raw}` pro všech sedmnáct slotů; `raw` je těch osm bajtů, jak leží v originálu. |
 | `panel` | `{score, score2, hiScore, lives, lives2, player}`. |
 | `controls` | stav ovládání, jak ho worker vidí — v dev režimu ho model vypisuje do rohu, takže je vidět, že klávesnice, gamepad i dotyk dorazily. |
-| `sounds[]` | co se má přehrát (M6). |
+| `events[]` | co se v průchodu stalo (`laser`, `pickUp`, `built`, `fuelled`, `treasure`, `flame`, `monsterDied`, `jetmanHit`, …); model z nich dělá zvuky (`GameModel.SOUNDS`). |
+| `sounds[]` | prázdné, zvuky jdou přes `events[]`. |
 
 ## ★ Na pořadí kreslení záleží
 
@@ -107,10 +108,11 @@ prokládání. Podrobně `sources/docs/disasm_notes.md` §14.
 
 ## Stav
 
-**M1: worker tiká, drží stav a nic nehýbe.** Fyzika Jetmana je M3, raketa
-a předměty M4, nepřátelé M5, zvuk M6 — a každý z nich dorazí s vlastním
-`match*` nástrojem, který ho porovná s originálem. To, že tabulka entit má
-tvar originálu, je právě proto, aby porovnání mělo co s čím srovnávat.
+**Worker hraje celou hru**: fyzika Jetmana (M3), raketa, díly, palivo
+a poklady (M4), nepřátelé (M5) a události zvuku (M6). Každá část má vlastní
+`match*` nástroj, který ji porovnává s originálem — čísla jsou v `MILNIKY.md`.
+Pole `sounds[]` ve zprávě `frame` zůstává prázdné: zvuky jdou jako
+`events[]` a model je převádí na rutiny beeperu (`GameModel.playEvents`).
 
 Hlídá to `tools/runworker.js`: projde celý protokol bez prohlížeče a kontroluje
 mimo jiné, že na začátku života stojí Jetman i raketa tam, kde je má originál,

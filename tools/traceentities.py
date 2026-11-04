@@ -16,7 +16,7 @@ Zaznamenává se všechno, na co se obsluhy ptají:
 - **stav generátoru náhody** `$5DCE` — ★ ten se v remaku zopakovat nedá,
   protože originál do něj míchá obnovovací registr a bajt z ROM Spectra
   (`$69C7`: `H=0`, takže `(HL)` čte adresu 0–255). `tools/matchentities.js`
-  ho proto sype zpátky „průchod po průchodu", stejně jako to dělá sabrewulf
+  ho proto sype zpátky „průchod po průchodu"
 - počítadlo průchodů `$5DCC`, `FRAMES`, kolo `$5DF0`, životy a skóre
 - stav ovládání, který v tu chvíli držel skript
 """

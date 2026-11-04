@@ -17,9 +17,7 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
 // begin code
 
 /**
- * Jetpac application shell (M1 skeleton, built on the Sabre Wulf one — the
- * same company, the same machine, the same discipline, and a ZX game on
- * ZXPlatform).
+ * Jetpac application shell, a ZX game on ZXPlatform.
  * LoadingModel -> MenuModel -> GameModel (the game) -> GameOverModel, plus
  * TapeLoadingModel, HallOfFameModel and AboutModel off the menu.
  *
@@ -32,9 +30,9 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
  *
  * - **Two players.** The menu of the original offers 1 PLAYER GAME and
  *   2 PLAYER GAME ($6201 reads the keys 1 to 5 and keeps the answer in one
- *   byte, $5CF3, exactly as Sabre Wulf keeps GameOptions), the panel carries
- *   1UP, HI and 2UP always, and there are two life counters and two scores in
- *   memory.
+ *   byte, $5CF3), the panel carries 1UP, HI and 2UP always, and there are two
+ *   life counters and two scores in memory. The remake keeps them in the
+ *   state and offers one player (ZADANI chap. 10/4).
  * - **The controls.** Whole rows rather than particular keys: the top row is
  *   the thrust, the middle row the laser, and the bottom row is split down the
  *   middle into left and right ($733E, $7374, $7393). Nothing to memorise, and
@@ -50,7 +48,7 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
  */
 export class GameApp extends AbstractApp {
 
-  /** the original's own choice: 1UP or 2UP (GameOptions, $9692) */
+  /** the original's own choice: 1UP or 2UP (bit 0 of $5CF3) */
   static get PLAYERS() { return [1, 2]; }
 
   constructor(platform, importPath, wsURL, devModeName, appIconSprite) {
@@ -271,10 +269,6 @@ export class GameApp extends AbstractApp {
     this.score2 = 0;
     this.hiScore = 0;
     this.player = 1;
-    // M4: ★ the percentage of the world seen is a real rule of the game, not
-    // a reviewer's impression — PrintRoomsVisited ($9CC6) counts the 256 bits
-    // of VisitedRooms **and the four pieces of the amulet**, so the whole is
-    // 260, and the original prints it as ADVENTURE COMPLETED nn% ($AAD4)
     // which level the game is on ($5DF0, counted from zero): it decides the
     // enemy, the rocket and the graphics of the pieces
     this.level = 0;
@@ -414,7 +408,7 @@ export class GameApp extends AbstractApp {
   /**
    * How many players the game runs with. Anything that is not one of
    * GameApp.PLAYERS is ignored, so a missing parameter keeps the current
-   * choice — the same shape the original keeps in GameOptions ($9692).
+   * choice — the same shape the original keeps in $5CF3.
    * @param {number} [players] - 1 or 2.
    * @returns {number} The number of players in force.
    */
@@ -444,8 +438,8 @@ export class GameApp extends AbstractApp {
   applyGlobalData(global) {
     this.globalData = global;
     this.lives = global.lives || this.lives;
-    // ★ unlike Sabre Wulf the original has no hall of fame of its own, so
-    // there is no preset HI to take from it: it starts at nought
+    // ★ the original has no hall of fame of its own, so there is no preset
+    // HI to take from it: it starts at nought
     if (global.hiScore && !this.hiScore) {
       this.hiScore = global.hiScore;
     }

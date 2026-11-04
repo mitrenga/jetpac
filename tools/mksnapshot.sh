@@ -2,8 +2,8 @@
 # Z kazety udělá snapshot a obraz RAM. Potřebuje sources/tape/*.tap (mimo git,
 # viz sources/tape/README.md) a SkoolKit v app/svision/sources/skoolkit (R-008).
 #
-# Na rozdíl od Sabre Wulfa tu není žádné šifrování ani Speedlock: kazeta je
-# standardní ROM rychlost a snapshot z tap2sna.py je rovnou ten správný obraz.
+# Kazeta nemá žádné šifrování ani turbo: je to standardní ROM rychlost
+# a snapshot z tap2sna.py je rovnou ten správný obraz.
 set -e
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 SK="$ROOT/app/svision/sources/skoolkit"

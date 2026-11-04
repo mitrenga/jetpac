@@ -5,8 +5,8 @@ Jedno místo, kde je napsané, co je na kazetě, jak se z ní skládá obraz pam
 a kde v něm co leží. Nástroje `dump*`, `trace*` a `match*` to berou odsud,
 aby se ta znalost nemusela opakovat (a rozcházet).
 
-Kazeta je **standardní ROM rychlost, bez šifrování** – na rozdíl od Sabre
-Wulfa, kde byl Speedlock a `CPL` od `$6000`. Viz `sources/docs/tape_layout.md`.
+Kazeta je **standardní ROM rychlost, bez šifrování**. Viz
+`sources/docs/tape_layout.md`.
 """
 import os
 
