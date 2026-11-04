@@ -82,6 +82,12 @@ export class GameModel extends AbstractModel {
     this.borderEntity.bkColor = ZXColor.black;
     this.desktopEntity.bkColor = ZXColor.black;
 
+    // ★ the FLASH clock of the ULA (16 frames, 330 ms as in the menu): the
+    // label of the player on turn blinks during the delay at the start of a
+    // life ($61BD), and without the clock the bit set there shows nothing
+    this.app.stack.flashState = false;
+    this.sendEvent(330, {id: 'changeFlashState'});
+
     this.sendEvent(0, {id: 'openAudioBus', bus: 'sounds',
                        options: {muted: this.app.muted.sounds}});
 
@@ -226,6 +232,11 @@ export class GameModel extends AbstractModel {
 
       case 'exitGame':
         this.app.setModel('MenuModel');
+        return true;
+
+      case 'changeFlashState':
+        this.app.stack.flashState = !this.app.stack.flashState;
+        this.sendEvent(330, {id: 'changeFlashState'});
         return true;
 
       case 'blurWindow':
