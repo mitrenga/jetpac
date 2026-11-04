@@ -96,7 +96,11 @@ export class MenuModel extends AbstractModel {
       frameWidth: 0,
       titleColor: ZXColor.brightRed,
       bkColor: ZXColor.black,
+      // the title and the buttons in the proportional ROM font, as the about
+      // screen and the hall of fame have them
+      fonts: 'zxFonts8x8',
       theme: {
+        buttonFont: 'zxFonts8x8',
         penColor: ZXColor.brightWhite,
         valueColor: choice,
         selectionColor: game,
@@ -148,21 +152,41 @@ export class MenuModel extends AbstractModel {
       waitForAudioEvent: {frameColor: ZXColor.black, bkColor: ZXColor.brightYellow, theme: {penColor: ZXColor.black}}
     });
 
-    // the player name dialog: the same black window, but its title and its
-    // CANCEL / OK in the proportional ROM font, as the about screen and the
-    // hall of fame are, the keys of its keyboard bright white and a held
-    // CAPS SHIFT / SYMBOL SHIFT bright yellow; the other dialogs keep the
-    // menu's. The window is a row taller at either end (34-176 instead of
+    // the player name dialog: the same black window, but the keys of its
+    // keyboard bright white and a held CAPS SHIFT / SYMBOL SHIFT bright
+    // yellow; the other dialogs keep the menu's. The window is a row taller at either end (34-176 instead of
     // 42-168): the title goes a row up, CANCEL / OK a row down, and the
     // keyboard, centred between them, stays where it was. A plain deep merge
     // over the menu's properties: ZXDialogProperties.merge would fill them
     // in from the ZX defaults again (the yellow window of Manic Miner)
+    // the settings and the volume dialogs: the window from row 3 to row 22
+    // (24-176), so that the title is where the hall of fame and the about
+    // screen have their heading and the bottom buttons end at 174, as their
+    // buttons do
+    this.settingsProperties = DialogTheme.mergeDeep(this.dialogProperties, {
+      y: 24,
+      height: 152,
+      // and the settings window all the width of the desktop
+      x: 0,
+      width: 256,
+      // the remap dialog covers the whole settings window, so it grows with it
+      remapKeys: {width: 256, height: 152}
+    });
+    // the volume dialog: rows 3-22 as well, its labels in the proportional
+    // ROM font too, and the window 240 px wide (8-248) instead of 192, because
+    // CHANGE VOLUME FOR GAME SOUNDS is 226 px in that font
+    this.soundsProperties = DialogTheme.mergeDeep(this.dialogProperties, {
+      y: 24,
+      height: 152,
+      x: 8,
+      width: 240,
+      theme: {labelFont: 'zxFonts8x8'}
+    });
+
     this.playerNameProperties = DialogTheme.mergeDeep(this.dialogProperties, {
       y: 34,
       height: 142,
-      fonts: 'zxFonts8x8',
       theme: {
-        buttonFont: 'zxFonts8x8',
         keyboardButtonsBkColor: ZXColor.brightWhite,
         keyboardButtonsShiftColor: ZXColor.brightYellow
       }
@@ -399,11 +423,11 @@ export class MenuModel extends AbstractModel {
         // ★ Jetpac has no music, so the sample is a sound of the game: three
         // laser shots, four frames apart, the way the trigger lets them out
         // ($681E and $6F94; AudioManager.volumeSample)
-        this.openDialog('SOUNDS', (dialog) => new ZXVolumeEntity(dialog, dialog.innerX, dialog.innerY, dialog.innerWidth, dialog.innerHeight, 'sounds', 'audioBusSoundsLevel', 'volumeSample', this.dialogProperties));
+        this.openDialog('SOUNDS', (dialog) => new ZXVolumeEntity(dialog, dialog.innerX, dialog.innerY, dialog.innerWidth, dialog.innerHeight, 'sounds', 'audioBusSoundsLevel', 'volumeSample', this.soundsProperties), this.soundsProperties);
         return true;
 
       case 'setSettings':
-        this.openDialog('SETTINGS', (dialog) => new ZXSettingsEntity(dialog, dialog.innerX, dialog.innerY, dialog.innerWidth, dialog.innerHeight, this.app.controlsOptions, this.dialogProperties));
+        this.openDialog('SETTINGS', (dialog) => new ZXSettingsEntity(dialog, dialog.innerX, dialog.innerY, dialog.innerWidth, dialog.innerHeight, this.app.controlsOptions, this.settingsProperties), this.settingsProperties);
         return true;
 
       case 'startTapeLoading':
