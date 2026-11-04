@@ -10,31 +10,19 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
 // begin code
 
 /**
- * HALL OF FAME as a screen of its own — the same shape as aboutModel.js: the
- * original's game selection screen (Room_Special_MainMenu, $61C6, composed by
- * $6260: black with the panel on it) with the table laid over the black middle
- * of the screen. Until 2026-09-07 it was a dialog over the menu
- * (HallOfFameEntity). Unlike ABOUT GAME it is **silent**: no prelude, the
- * audio buses stay closed as under the menu.
+ * HALL OF FAME as a screen of its own, in the same shape as aboutModel.js:
+ * the original's menu screen (black with the panel on it,
+ * GameAreaEntity.panelScreen) with the copyright line on the bottom row, and
+ * the table below the panel, all of its width, in the proportional ROM font —
+ * the heading one empty row below the score row (row 3), one more empty row,
+ * ten places from row 5 and CLOSE on row 21. Silent like the menu.
  *
- * ★ **The hall of fame is the original's own**, not an addition of the remake
- * (ZADANI chap. 6): the game has HallOfFame, NewHighScore and a default table
- * of **six places** at $B304 — three BCD bytes of score and a three-letter
- * name each — under the heading ULTIMATE HALL OF FAME, kept here word for
- * word, with the places written 1ST to 6TH ($B346). The top of that
- * table, 102275 ULT, is the HI the panel shows the moment the game is switched
- * on. And the original shows it over
- * this very jungle, flipping to it from the game selection screen by itself
- * (CounterHallOfFame, $96B8); the remake shows it on demand from the menu
- * instead (menuModel.js).
- *
- * So the screen keeps the original's shape: six places, 1ST-6TH, and the
- * original's own table as the fallback when the server cannot be reached
- * (data/global.json hallOfFame.defaults). What is the remake's own is only
- * that the live scores come off a server and that a name can be longer than
- * three letters — a row is place, score and name, and a name too long for its
- * column ping-pongs (SlidingTextEntity), the way the player's name does in the
- * menu.
+ * ★ **The original has no hall of fame** (ZADANI chap. 10/4): only the HI in
+ * the panel, gone when the machine is switched off. The table on the server
+ * is the remake's own, as with its siblings, so there is no table of the
+ * original to fall back on: with no scores yet, or offline, the places stay
+ * empty and a note says why. A name too long for its column ping-pongs
+ * (SlidingTextEntity), the way the player's name does in the menu.
  *
  * CLOSE (Enter, Escape, space, GamepadOK, GamepadExit) goes back to the menu.
  */
@@ -54,16 +42,15 @@ export class HallOfFameModel extends AbstractModel {
     // the names, ticked from loopModel(): a name too long for its column ping-pongs
     this.nameEntities = [];
 
-    // the table in the black middle of the frame: cells 4-27 by 5-20
-    // are 192 x 128 px, 4 px kept free on either side as the menu does
-    // (menuModel.js)
-    this.panelX = 36;
-    this.panelY = 42;
-    this.panelWidth = 184;
-    this.panelHeight = 126;
+    // the table under the panel, all of its width: rows 3-22, the same frame
+    // as the about text (aboutModel.js)
+    this.panelX = 0;
+    this.panelY = 3*8;
+    this.panelWidth = 32*8;
+    this.panelHeight = 20*8;
 
-    // the original's places, written the way the original writes them ($B346)
-    this.places = ['1ST', '2ND', '3RD', '4TH', '5TH', '6TH'];
+    // ten places; db/hallOfFame.php returns as many
+    this.places = ['1ST', '2ND', '3RD', '4TH', '5TH', '6TH', '7TH', '8TH', '9TH', '10TH'];
   } // constructor
 
   newBorderEntity() {
@@ -109,17 +96,15 @@ export class HallOfFameModel extends AbstractModel {
         'GAME DATA MISSING (data/sprites.json). RUN tools/dumpsprites.py.', ZXColor.brightGreen, false, {align: 'center', textWrap: true}));
     }
 
-    // the table, over the middle of the frame, all on the black of the
-    // tableEntity itself: the heading, the CLOSE button and the six places
-    // drawn by showTable()
+    // the table under the panel, all on the black of the tableEntity itself:
+    // the heading, the CLOSE button and the ten places drawn by showTable()
     this.tableEntity = new AbstractEntity(this.desktopEntity, this.panelX, this.panelY, this.panelWidth, this.panelHeight, false, ZXColor.black);
     this.desktopEntity.addEntity(this.tableEntity);
     var w = this.panelWidth, h = this.panelHeight;
-    // the heading in the title bar every panel of the game has (aboutModel.js,
-    // the dialogs of menuModel.js): fonts5x5, bright red, 9 px from the top
-    // with a 2 px margin, centred; the text is the original's, see above
-    this.tableEntity.addEntity(new TextEntity(this.tableEntity, this.app.fonts.fonts5x5, 0, 0, w, 9, 'ULTIMATE HALL OF FAME', ZXColor.brightRed, false, {align: 'center', topMargin: 2}));
-    this.tableEntity.addEntity(new ButtonEntity(this.tableEntity, this.app.fonts.fonts5x5, w-39, h-16, 36, 13, 'CLOSE', {id: 'closeHallOfFame'}, ['Enter', 'Escape', ' ', 'GamepadOK', 'GamepadExit'], ZXColor.brightWhite, ZXColor.blue, {align: 'center', margin: 4}));
+    var fonts = this.app.fonts.zxFonts8x8;
+    // the heading bright red and centred, as ABOUT GAME is (aboutModel.js)
+    this.tableEntity.addEntity(new TextEntity(this.tableEntity, fonts, 0, 0, w, 8, 'HALL OF FAME', ZXColor.brightRed, false, {align: 'center'}));
+    this.tableEntity.addEntity(new ButtonEntity(this.tableEntity, fonts, w-52, h-2*8-2, 52, 12, 'CLOSE', {id: 'closeHallOfFame'}, ['Enter', 'Escape', ' ', 'GamepadOK', 'GamepadExit'], ZXColor.brightWhite, ZXColor.blue, {align: 'center', margin: 2}));
 
     if (navigator.onLine) {
       this.fetchData('hallOfFame.db', false, {});
@@ -132,21 +117,18 @@ export class HallOfFameModel extends AbstractModel {
   } // initData
 
   /**
-   * The original's own six entries, from data/global.json.
-   * @returns {Array} [{name, score}] as the game has them at $B304.
+   * What the table shows without the server: nothing, since the original has
+   * no table of its own (see the class comment).
+   * @returns {Array} [{name, score}], empty.
    */
   defaultTable() {
-    var global = this.app.globalData;
-    if (global && global.hallOfFame && global.hallOfFame.defaults) {
-      return global.hallOfFame.defaults;
-    }
     return [];
   } // defaultTable
 
   setData(data) {
     var rows = Object.keys(data.data).map((key) => data.data[key]);
     if (!rows.length) {
-      // nobody has played yet: show the table the original ships with
+      // nobody has played yet: the places stay empty
       this.showTable(this.defaultTable(), true);
       return;
     }
@@ -161,39 +143,43 @@ export class HallOfFameModel extends AbstractModel {
   } // errorData
 
   /**
-   * Draws the six places.
+   * Draws the ten places.
    * @param {Array} rows - [{name, score}] in descending order of score.
-   * @param {boolean} original - True when these are the original's own entries.
+   * @param {boolean} original - True when there are no scores from the server
+   *        to show (nobody has played yet, or offline).
    */
   showTable(rows, original) {
     this.rowEntities.forEach((entity) => entity.destroy());
     this.rowEntities = [];
     this.nameEntities = [];
     var w = this.panelWidth, h = this.panelHeight;
-    // the places in pairs, from the top down in the colours of the panel:
-    // white, yellow, cyan — on black; 6 px between the rows
-    var colors = [ZXColor.brightWhite, ZXColor.brightWhite, ZXColor.brightYellow, ZXColor.brightYellow, ZXColor.brightCyan, ZXColor.brightCyan];
+    var fonts = this.app.fonts.zxFonts8x8;
+    // the places in pairs, from the top down in the colours of the panel —
+    // bright white, yellow, cyan — and 7TH to 10TH in plain white, on black;
+    // 4 px between the rows, from row 5 (2 rows below the heading)
+    var colors = [ZXColor.brightWhite, ZXColor.brightWhite, ZXColor.brightYellow, ZXColor.brightYellow,
+                  ZXColor.brightCyan, ZXColor.brightCyan, ZXColor.white, ZXColor.white, ZXColor.white, ZXColor.white];
     for (var i = 0; i < this.places.length; i++) {
-      var y = 22+i*14;
+      var y = 2*8+i*12;
       var row = rows[i];
       var color = colors[i];
-      var place = new TextEntity(this.tableEntity, this.app.fonts.zxFonts8x8, 4, y, 26, 8, this.places[i], color, false, {align: 'right'});
+      // place right-aligned in 32 px, the score right-aligned in the next
+      // 56 px, the name flush right in what is left of the width
+      var place = new TextEntity(this.tableEntity, fonts, 0, y, 32, 8, this.places[i], color, false, {align: 'right'});
       this.tableEntity.addEntity(place);
       this.rowEntities.push(place);
-      // place (right-aligned in 26 px), 8 px, the six digits of the score
-      // (48 px mono), 8 px, the name flush right in what is left of the row
-      var score = new TextEntity(this.tableEntity, this.app.fonts.zxFonts8x8Mono, 38, y, 48, 8, row ? String(row.score).padStart(6, '0') : '', color, false, {});
+      var score = new TextEntity(this.tableEntity, fonts, 32, y, 56, 8, row ? String(row.score).padStart(6, '0') : '', color, false, {align: 'right'});
       this.tableEntity.addEntity(score);
       this.rowEntities.push(score);
-      var name = new SlidingTextEntity(this.tableEntity, this.app.fonts.zxFonts8x8, 94, y, w-94-4, 8, row ? String(row.name) : '', color, false, {align: 'right', animation: 'pingPong', speed: 30});
+      var name = new SlidingTextEntity(this.tableEntity, fonts, 96, y, w-96, 8, row ? String(row.name) : '', color, false, {align: 'right', animation: 'pingPong', speed: 30});
       this.tableEntity.addEntity(name);
       this.rowEntities.push(name);
       this.nameEntities.push(name);
     }
     if (original) {
-      var note = new TextEntity(this.tableEntity, this.app.fonts.fonts5x5, 4, h-16, w-48, 12,
+      var note = new TextEntity(this.tableEntity, fonts, 0, h-2*8, w-60, 8,
         navigator.onLine ? 'NOBODY HAS PLAYED YET' : 'SYSTEM OFFLINE',
-        ZXColor.brightRed, false, {textWrap: true, margin: 1});
+        ZXColor.brightRed, false, {});
       this.tableEntity.addEntity(note);
       this.rowEntities.push(note);
     }
