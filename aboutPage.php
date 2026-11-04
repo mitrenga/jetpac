@@ -4,7 +4,6 @@ require_once 'app/svision/php/abstractAboutPage.php';
 
 /**
  * The /about page: the story of the original Jetpac and of this remake.
- * M1 text; the final content comes with M7.
  */
 class AboutPage extends AbstractAboutPage {
 
@@ -15,31 +14,26 @@ class AboutPage extends AbstractAboutPage {
         [
           'heading' => 'The original game (1983)',
           'html' =>
-            '<p>Jetpac was released by Ultimate Play The Game in 1983 for the 48K ZX Spectrum, '.
-            'the first of the four Sabreman games. Sabreman is lost in a jungle maze of 256 screens '.
-            'and has to find the four pieces of an amulet, get past the keeper of the gate and escape. '.
-            'Movement is eight-way, collection is automatic, and the only weapon is a sword.</p>'.
-            '<p>Its two defining ideas are the orchids and the wulf. The orchids bloom for a few '.
-            'seconds only, and each colour does something else to Sabreman — the inlay names Yellow '.
-            'Sickness, White Cure, Red Zombie, Blue Super High Energy and Purple De-Orientation. '.
-            'The Jetpac itself cannot be killed at all; it simply hunts you, and so does the '.
-            'keeper of the gate. Hippos, rhinos and natives can be driven off but not destroyed, and '.
-            'the natives point the way to the amulet. The game keeps a percentage of the screens you '.
-            'have visited, has a hall of fame of its own, plays Bach on the one-bit beeper, and can '.
-            'be played by two people taking turns.</p>',
+            '<p>Jetpac was released by Ultimate Play The Game in 1983 for the 16K ZX Spectrum. It was '.
+            'the first game of the studio founded by Tim and Chris Stamper, and the first of the Jetman '.
+            'series. Jetman has landed on an alien planet with his rocket in three pieces: the base stands '.
+            'on the ground, the other two lie on the ledges above. He has to fly them over and stack them, '.
+            'then fill the tank with six loads of fuel that drop from the sky, climb aboard and take off for '.
+            'the next planet.</p>'.
+            '<p>All the while waves of aliens drift in from both sides of the screen, and every planet '.
+            'brings a different kind, with a behaviour of its own. Jetman flies with inertia, his laser '.
+            'wraps round the screen, and gems and other treasure that fall now and then are worth extra '.
+            'points. Every fourth planet the rocket comes apart and has to be built again.</p>',
         ],
         [
           'heading' => 'This remake',
           'html' =>
-            '<p>This is a faithful remake, rewritten for the web browser rather than emulated. The graphics '.
-            'and the world are taken out of the original program, not redrawn, and the rules come from the '.
-            'original instructions and from the disassembly of the game — where a rule cannot be shown, it '.
-            'is left as an open question rather than guessed. Even the frame rate is the Spectrum\'s own '.
-            '50.08 Hz, and the attribute clash of the hardware is reproduced instead of cleaned up, which '.
-            'in Jetpac matters more than in most games: the jungle is the most colourful screen '.
-            'Ultimate ever put on a Spectrum.</p>'.
+            '<p>This is a faithful remake, rewritten for the web browser rather than emulated. Its graphics '.
+            'and the way the game plays are those of the original ZX Spectrum game, with one exception: the '.
+            'sprites. The colour clash between them, the Spectrum\'s familiar side effect, does not happen '.
+            'here. The high scores are kept in a hall of fame on the server.</p>'.
             '<p>It runs directly in your browser — nothing to install, nothing to download. Keyboard '.
-            '(the original Q W E R T, or the arrow keys), touch controls and gamepads are supported.</p>'.$this->installNote(),
+            '(the arrow keys and space, or keys of your own), touch controls and gamepads are supported.</p>'.$this->installNote(),
         ],
         [
           'heading' => 'Other games',
@@ -51,8 +45,12 @@ class AboutPage extends AbstractAboutPage {
         ],
       ],
       'links' => [
-        ['label' => 'Jetpac at Spectrum Computing', 'url' => 'https://spectrumcomputing.co.uk/entry/9408/ZX-Spectrum/Sabre-Wulf'],
-        ['label' => 'Jetpac at World of Spectrum', 'url' => 'https://worldofspectrum.org/archive/software/games/sabre-wulf-ultimate-play-the-game'],
+        ['label' => 'Jetpac on Wikipedia', 'url' => 'https://en.wikipedia.org/wiki/Jetpac'],
+        ['label' => 'Jetpac at Spectrum Computing', 'url' => 'https://spectrumcomputing.co.uk/entry/9362'],
+        ['label' => 'Jetpac at World of Spectrum', 'url' => 'https://worldofspectrum.org/software?id=0009362'],
+        ['label' => 'Tim and Chris Stamper on Wikipedia', 'url' => 'https://en.wikipedia.org/wiki/Stamper_brothers'],
+        ['label' => 'Tim Stamper — his games at Spectrum Computing', 'url' => 'https://spectrumcomputing.co.uk/list?label_id=14605'],
+        ['label' => 'Chris Stamper — his games at Spectrum Computing', 'url' => 'https://spectrumcomputing.co.uk/list?label_id=2480'],
       ],
       'footer' =>
         '<p>An unofficial fan remake. The original game and its artwork belong to their authors '.
