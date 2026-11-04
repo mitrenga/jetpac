@@ -103,8 +103,14 @@ export class AboutModel extends AbstractModel {
     var fonts = this.app.fonts.zxFonts8x8;
     this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, fonts, 0, 0, w, 8, 'ABOUT GAME', {id: 'clickLabel'}, [], ZXColor.brightRed, false, {align: 'center', member: 'titleBar', hoverColor: ZXColor.black, clickColor: ZXColor.black}));
     this.aboutEntity.addEntity(new TextEntity(this.aboutEntity, fonts, 0, 2*8, w, h-5*8, this.aboutText, ZXColor.brightWhite, false, {align: 'justify', textWrap: true, member: 'aboutText'}));
-    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, fonts, 0, h-2*8-2, 76, 12, 'MORE INFO', {id: 'openAboutURL'}, ['Enter', 'GamepadOK'], ZXColor.brightWhite, ZXColor.green, {align: 'center', margin: 2}));
-    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, fonts, w-52, h-2*8-2, 52, 12, 'CLOSE', {id: 'closeAbout'}, ['Escape', 'GamepadExit'], ZXColor.brightWhite, ZXColor.blue, {align: 'center', margin: 2}));
+    // the buttons as CANCEL / OK of the player name dialog draw them
+    // (PlayerNameEntity): the font's height plus 8, the text 4 px down, 2 px
+    // over the bottom edge
+    var buttonHeight = fonts.charsHeight+8;
+    var buttonY = h-buttonHeight-2;
+    var topMargin = Math.floor((buttonHeight-fonts.charsHeight)/2);
+    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, fonts, 0, buttonY, 76, buttonHeight, 'MORE INFO', {id: 'openAboutURL'}, ['Enter', 'GamepadOK'], ZXColor.brightWhite, ZXColor.green, {align: 'center', topMargin: topMargin}));
+    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, fonts, w-52, buttonY, 52, buttonHeight, 'CLOSE', {id: 'closeAbout'}, ['Escape', 'GamepadExit'], ZXColor.brightWhite, ZXColor.blue, {align: 'center', topMargin: topMargin}));
 
     this.fetchData('stats.db', false, {});
 

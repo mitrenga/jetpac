@@ -104,7 +104,11 @@ export class HallOfFameModel extends AbstractModel {
     var fonts = this.app.fonts.zxFonts8x8;
     // the heading bright red and centred, as ABOUT GAME is (aboutModel.js)
     this.tableEntity.addEntity(new TextEntity(this.tableEntity, fonts, 0, 0, w, 8, 'HALL OF FAME', ZXColor.brightRed, false, {align: 'center'}));
-    this.tableEntity.addEntity(new ButtonEntity(this.tableEntity, fonts, w-52, h-2*8-2, 52, 12, 'CLOSE', {id: 'closeHallOfFame'}, ['Enter', 'Escape', ' ', 'GamepadOK', 'GamepadExit'], ZXColor.brightWhite, ZXColor.blue, {align: 'center', margin: 2}));
+    // CLOSE as the buttons of the about screen and of the player name
+    // dialog: the font's height plus 8, the text 4 px down, 2 px over the
+    // bottom edge
+    var buttonHeight = fonts.charsHeight+8;
+    this.tableEntity.addEntity(new ButtonEntity(this.tableEntity, fonts, w-52, h-buttonHeight-2, 52, buttonHeight, 'CLOSE', {id: 'closeHallOfFame'}, ['Enter', 'Escape', ' ', 'GamepadOK', 'GamepadExit'], ZXColor.brightWhite, ZXColor.blue, {align: 'center', topMargin: Math.floor((buttonHeight-fonts.charsHeight)/2)}));
 
     if (navigator.onLine) {
       this.fetchData('hallOfFame.db', false, {});
@@ -177,7 +181,9 @@ export class HallOfFameModel extends AbstractModel {
       this.nameEntities.push(name);
     }
     if (original) {
-      var note = new TextEntity(this.tableEntity, fonts, 0, h-2*8, w-60, 8,
+      // on the line of the CLOSE text: the button is the font's height plus
+      // 8, 2 px over the bottom edge, its text 4 px down
+      var note = new TextEntity(this.tableEntity, fonts, 0, h-fonts.charsHeight-8-2+4, w-60, 8,
         navigator.onLine ? 'NOBODY HAS PLAYED YET' : 'SYSTEM OFFLINE',
         ZXColor.brightRed, false, {});
       this.tableEntity.addEntity(note);
