@@ -6,23 +6,15 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
 // begin code
 
 /**
- * The pause panel. ★ The original pauses too — "Continuous Pause" on the
- * inlay, on CAPS SHIFT or SPACE/BREAK (ZADANI chap. 3) — but it has no menu
- * behind it; RESUME / SOUNDS / MUSIC / EXIT is the remake's own, like the main
- * menu itself.
+ * The pause panel. ★ The original pauses too — it holds the game while
+ * CAPS SHIFT is held ($69BD) — but it has no screen or menu for it
+ * (ZADANI chap. 10/4); RESUME / SOUNDS / EXIT is the remake's own, like the
+ * main menu itself. Jetpac has no music, so SOUNDS is the one switch.
  *
- * ★ Since 2026-09-07 there is one switch, SOUNDS, and one bus the music goes
- * over too; the MUSIC item went with the menu's MUSIC slider (ZADANI chap. 1).
- * Sabre Wulf **has** music, unlike Underwurlde: the
- * program carries MusicData_GameInitialisation, _Poem, _GameOver and
- * _GameComplete, and PlaySquareWave / PlayWaveSequence to play them (ZXDB
- * names Bach, BWV 846, as the source). Since M6 those four tunes really play,
- * out of the note table at $BDD2 and the routines that read it
- * (app/beeper.js), so the slider controls something the game actually has.
- *
- * ★ And while the pause is up, the border does what the original's does: $AC40
- * alternates it blue and magenta every 32 frames — the one and only thing
- * Sabre Wulf ever does with the border (roomModel.startPauseBorder).
+ * The look is the Spectrum's: an 8 px white frame all round, the title in the
+ * proportional ROM font in the top band of the frame, the items black on
+ * cyan inside. 160 x 72 px, its top left corner on the cell grid (48, 64,
+ * gameModel.js).
  */
 export class PauseGameEntity extends AbstractEntity {
 
@@ -37,32 +29,42 @@ export class PauseGameEntity extends AbstractEntity {
       {t1: 'SOUNDS', event: {id: 'changeSoundsState'}},
       {t1: 'EXIT GAME', event: {id: 'exitGame'}}
     ];
+    // the frame all round, the title in its top band
+    this.frameWidth = 8;
+    // the selection bar keeps the frame's own width from the frame on every
+    // side: the cyan inside is 144 x 56, so 8 px all round and three rows
+    // of 12 px, 14 px apart (8 + 12 + 2 + 12 + 2 + 12 + 8 = 56). itemPitch
+    // has to be set, the menu's own is 16
     this.menuOptions = {
       fonts: this.app.fonts.zxFonts8x8,
-      leftMargin: 9,
-      rightMargin: 9,
+      leftMargin: 8,
+      rightMargin: 8,
       topMargin: 8,
       itemHeight: 12,
+      itemPitch: 14,
       t1LeftMargin: 3,
-      t1TopMargin: 2, 
-      t2Width: 114,
+      t1TopMargin: 2,
+      t2Width: 48,
       t2RightMargin: 3,
-      t2TopMargin: 2, 
+      t2TopMargin: 2,
       textColor: ZXColor.black,
       selectionTextColor: ZXColor.black,
-      selectionBarColor: '#dbdbdbff',
+      selectionBarColor: ZXColor.brightWhite,
       hoverColor: '#0000001e',
-      selectionHoverColor: '#efefefff',
+      selectionHoverColor: '#ffffffcc',
       clickColor: '#0000002e',
-      selectionClickColor: '#ffffffff'
-    }
+      selectionClickColor: ZXColor.white
+    };
   } // constructor
 
   init() {
     super.init();
-    this.addEntity(new AbstractEntity(this, 0, 0, this.width, this.height, false, ZXColor.brightWhite));
-    this.addEntity(new TextEntity(this, this.app.fonts.fonts5x5, 0, 0, this.width, 9, this.title, ZXColor.brightBlack, false, {align: 'center', margin: 2}));
-    this.addEntity(new MenuEntity(this, 1, 8, this.width-2, this.height-9, ZXColor.yellow, this.menuOptions, this, this.getMenuData));
+    var f = this.frameWidth;
+    // the white frame (the whole panel; the cyan inside covers its middle)
+    this.addEntity(new AbstractEntity(this, 0, 0, this.width, this.height, false, ZXColor.white));
+    // the title in the top band of the frame, black, centred
+    this.addEntity(new TextEntity(this, this.app.fonts.zxFonts8x8, 0, 0, this.width, f, this.title, ZXColor.black, false, {align: 'center'}));
+    this.addEntity(new MenuEntity(this, f, f, this.width-2*f, this.height-2*f, ZXColor.cyan, this.menuOptions, this, this.getMenuData));
   } // init
 
   getMenuData(self, key, row) {

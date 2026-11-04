@@ -334,7 +334,7 @@ export class GameModel extends AbstractModel {
     }
     this.sendWorkerMessage({id: 'pause'});
     this.sendEvent(0, {id: 'pauseAllAudioBuses'});
-    this.desktopEntity.addModalEntity(new PauseGameEntity(this.desktopEntity, 52, 34, 153, 97, 'PAUSE GAME', 'MenuModel'));
+    this.desktopEntity.addModalEntity(new PauseGameEntity(this.desktopEntity, 48, 64, 160, 72, 'PAUSE GAME', 'MenuModel'));
   } // pauseGame
 
   handleWorkerMessage(event) {
@@ -485,7 +485,7 @@ export class GameModel extends AbstractModel {
   } // controlAction
 
   /**
-   * What this half of the screen does: an eight-way stick or the sword
+   * What this half of the screen does: the stick or the laser button
    * (controlsOptions.touchscreen.halves). Which half is which is the
    * left-handed / right-handed choice in SETTINGS.
    * @param {string} side - 'left' or 'right'.
