@@ -13,10 +13,11 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
 /**
  * HALL OF FAME as a screen of its own, in the same shape as aboutModel.js:
  * the original's menu screen (black with the panel on it,
- * GameAreaEntity.panelScreen) with the copyright line on the bottom row, and
+ * GameAreaEntity.panelScreen) with the copyright line on row 22, and
  * the table below the panel, all of its width, in the proportional ROM font —
  * the heading one empty row below the score row (row 3), one more empty row,
- * ten places from row 5 and CLOSE on row 21. Silent like the menu.
+ * ten places from row 5 and CLOSE just above the copyright line on row 22.
+ * Silent like the menu.
  *
  * ★ **The original has no hall of fame** (ZADANI chap. 10/4): only the HI in
  * the panel, gone when the machine is switched off. The table on the server
@@ -43,12 +44,12 @@ export class HallOfFameModel extends AbstractModel {
     // the names, ticked from loopModel(): a name too long for its column ping-pongs
     this.nameEntities = [];
 
-    // the table under the panel, all of its width: rows 3-22, the same frame
-    // as the about text (aboutModel.js)
+    // the table under the panel, all of its width: rows 3-21, the same frame
+    // as the about text (aboutModel.js), above the copyright line on row 22
     this.panelX = 0;
     this.panelY = 3*8;
     this.panelWidth = 32*8;
-    this.panelHeight = 20*8;
+    this.panelHeight = 19*8;
 
     // ten places; db/hallOfFame.php returns as many
     this.places = ['1ST', '2ND', '3RD', '4TH', '5TH', '6TH', '7TH', '8TH', '9TH', '10TH'];
@@ -89,10 +90,11 @@ export class HallOfFameModel extends AbstractModel {
       // the JETPAC logo where the original prints 2UP (ZADANI.md §10/9), as
       // on the menu and in the game
       this.desktopEntity.addEntity(new JetpacLogoEntity(this.desktopEntity));
-      // ★ the copyright line of the original's own menu screen, where it has
-      // it: the bottom row, bright white ($6283 prints it at $B800, i.e. row
-      // 23, from the string at $6040)
-      this.copyrightEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, 0, 23*8, 32*8, 8, '©1983 A.C.G. ALL RIGHTS RESERVED', ZXColor.brightWhite, ZXColor.black, {align: 'center'});
+      // the copyright line as the menu shows it under its dialogs: on row 22,
+      // where the menu has its version, fourteen cells wide and centred, in
+      // the ZX font, bright white (menuModel.openDialog)
+      var copyrightWidth = 14*8;
+      this.copyrightEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, (this.desktopWidth-copyrightWidth)/2, 22*8, copyrightWidth, 8, '©1983 A.C.G.', ZXColor.brightWhite, ZXColor.black, {align: 'center'});
       this.desktopEntity.addEntity(this.copyrightEntity);
     } else {
       this.desktopEntity.addEntity(new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8, 0, 8*8, this.desktopWidth, 8, 'JETPAC', ZXColor.brightWhite, false, {align: 'center'}));

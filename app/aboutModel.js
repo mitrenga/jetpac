@@ -11,8 +11,8 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
 
 /**
  * ABOUT GAME as a screen of its own: the original's menu screen (black with
- * the panel on it, GameAreaEntity.panelScreen) with the copyright line on the
- * bottom row, and the about text and its buttons below the panel, all of its
+ * the panel on it, GameAreaEntity.panelScreen) with the copyright line on
+ * row 22 as the menu has it, and the about text and its buttons below the panel, all of its
  * width, in the proportional ROM font.
  *
  * ★ Jetpac has no music, so this screen is silent like the menu.
@@ -37,12 +37,12 @@ export class AboutModel extends AbstractModel {
 
     // the about panel under the panel of the original's screen, all of its
     // width: the title one empty row below the score row (row 3), one more
-    // empty row, the text from row 5, the buttons on row 21 above the
-    // copyright line on row 23 — all of it in the proportional ROM font
+    // empty row, the text from row 5, the buttons just above the copyright
+    // line on row 22 — all of it in the proportional ROM font
     this.panelX = 0;
     this.panelY = 3*8;
     this.panelWidth = 32*8;
-    this.panelHeight = 20*8;
+    this.panelHeight = 19*8;
     this.panelBkColor = ZXColor.black;
 
     this.aboutText = 'Jetpac is a remake of the 1983 Ultimate Play the Game classic for the 16K ZX Spectrum.\n' +
@@ -89,10 +89,11 @@ export class AboutModel extends AbstractModel {
       // the JETPAC logo where the original prints 2UP (ZADANI.md §10/9), as
       // on the menu and in the game
       this.desktopEntity.addEntity(new JetpacLogoEntity(this.desktopEntity));
-      // ★ the copyright line of the original's own menu screen, where it has
-      // it: the bottom row, bright white ($6283 prints it at $B800, i.e. row
-      // 23, from the string at $6040)
-      this.copyrightEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, 0, 23*8, 32*8, 8, '©1983 A.C.G. ALL RIGHTS RESERVED', ZXColor.brightWhite, ZXColor.black, {align: 'center'});
+      // the copyright line as the menu shows it under its dialogs: on row 22,
+      // where the menu has its version, fourteen cells wide and centred, in
+      // the ZX font, bright white (menuModel.openDialog)
+      var copyrightWidth = 14*8;
+      this.copyrightEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, (this.desktopWidth-copyrightWidth)/2, 22*8, copyrightWidth, 8, '©1983 A.C.G.', ZXColor.brightWhite, ZXColor.black, {align: 'center'});
       this.desktopEntity.addEntity(this.copyrightEntity);
     } else {
       this.desktopEntity.addEntity(new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8, 0, 8*8, this.desktopWidth, 8, 'JETPAC', ZXColor.brightWhite, false, {align: 'center'}));
