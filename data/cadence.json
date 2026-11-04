@@ -1,0 +1,23 @@
+{
+ "note": "kadence dlouhého kola změřená v simulátoru s kontencí (tools/tracecadence.py); worker používá roundsPerFrame, rozpad podle nepřátel je měření, ne předpis",
+ "frameTstates": 69888,
+ "average": 0.4664,
+ "playAverage": 0.365,
+ "playLongRoundMs": 54.7,
+ "byCreatures": {
+  "0": 0.7008,
+  "2": 0.4286,
+  "3": 0.3625,
+  "4": 0.361,
+  "5": 0.3505
+ },
+ "samples": {
+  "0": 815,
+  "2": 33,
+  "3": 580,
+  "4": 278,
+  "5": 68
+ },
+ "rounds": 1796,
+ "frames": 3851
+}

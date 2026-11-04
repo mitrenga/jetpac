@@ -1,0 +1,54 @@
+{
+ "note": "zvuky z originálu (tools/dumpsound.py): čtyři vstupy do jedné smyčky a jeden sweep. Žádná hudba – ta v programu není.",
+ "machine": {
+  "speakerOn": 16,
+  "speakerOff": 0
+ },
+ "loop": {
+  "addr": 26637,
+  "note": "obdélník: D je půlvlna, C počet vln"
+ },
+ "routines": {
+  "rocketFlame": {
+   "addr": 26605,
+   "halfWave": null,
+   "waves": 16,
+   "note": "plamen rakety – výška tónu je y rakety ($67ED)"
+  },
+  "built": {
+   "addr": 26621,
+   "halfWave": 32,
+   "waves": 80,
+   "note": "díl rakety nasazen / natankováno"
+  },
+  "pickUp": {
+   "addr": 26627,
+   "halfWave": 80,
+   "waves": 40,
+   "note": "zvednutí dílu nebo paliva"
+  },
+  "treasure": {
+   "addr": 26633,
+   "halfWave": 48,
+   "waves": 64,
+   "note": "poklad, odlet, konec odpočtu"
+  }
+ },
+ "sweep": {
+  "addr": 26654,
+  "from": 8,
+  "to": 56,
+  "note": "laser – stoupající sweep, C od 8 do $38 ($681E)"
+ },
+ "soundSlot": {
+  "types": [
+   12,
+   4,
+   13,
+   4
+  ],
+  "shortAddr": 26699,
+  "longAddr": 26708,
+  "note": "zvuk jako entita ve slotu $5D28 – typ 12 a 13 ($6834)"
+ }
+}

@@ -1,0 +1,631 @@
+{
+ "note": "grafika z originálu (tools/dumpsprites.py). Sprite = [dx][šířka v bajtech][výška][data], a **data jdou zdola nahoru**: bajt 0 je spodní řádek a kreslí se na y entity, každý další o pixel výš ($72EE dělá DEC H). Ověřeno proti obrazovce originálu.",
+ "shiftTable": {
+  "addr": 30458,
+  "count": 32,
+  "pointers": [
+   30614,
+   30665,
+   30740,
+   30815,
+   31067,
+   30992,
+   30941,
+   30890,
+   31394,
+   31445,
+   31496,
+   31571,
+   31319,
+   31244,
+   31193,
+   31142,
+   24064,
+   24064,
+   24115,
+   24115,
+   24217,
+   24217,
+   24166,
+   24166,
+   24268,
+   24319,
+   24370,
+   24421,
+   24421,
+   24370,
+   24319,
+   24268
+  ]
+ },
+ "itemTable": {
+  "addr": 26563,
+  "pointers": [
+   31950,
+   32055,
+   31845,
+   32160,
+   31985,
+   32090,
+   31880,
+   32195,
+   32020,
+   32125,
+   31915,
+   32230,
+   32284,
+   32284,
+   32284,
+   32284,
+   32265,
+   32309,
+   32334,
+   32363,
+   32384
+  ]
+ },
+ "sprites": {
+  "$7796": {
+   "addr": 30614,
+   "dx": 0,
+   "width": 2,
+   "height": 24,
+   "bytes": "EAAgANgARAA4AFAeABx8AFQYKfg9+HuAW8B0PlTQdNBXgGAAZ8Au4C7gLeAOAAeA"
+  },
+  "$77C9": {
+   "addr": 30665,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "CgAAUAAABQAACgAACIAAFQeAAAcAHwAAFQYACn4AD34AHuAAFvAAHQ+AFTQAHTQAFeAAGAAAGfAAC7gAC7gAC3gAA4AAAeAA"
+  },
+  "$7814": {
+   "addr": 30740,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "AQAABAAAEIAABgAAAIAABsHgAAHAB8AABUGAAp+AA9+AB7gABbwAB0PgBU0AB00ABXgABgAABnwAAu4AAu4AAt4AAOAAAHgA"
+  },
+  "$785F": {
+   "addr": 30815,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "CAAAAIAACSAAAkAAAJAAAtB4AABwAfAAAVBgAKfgAPfgAe4AAW8AAdD4AVNAAdNAAV4AAYAAAZ8AALuAALuAALeAADgAAB4A"
+  },
+  "$78AA": {
+   "addr": 30890,
+   "dx": 8,
+   "width": 2,
+   "height": 24,
+   "bytes": "AAgABAAbACIAHHgKOAAAPhgqH5QfvAHeA9p8LgsqCy4B6gAGA+YHdAd0B7QAcAHg"
+  },
+  "$78DD": {
+   "addr": 30941,
+   "dx": 8,
+   "width": 2,
+   "height": 24,
+   "bytes": "AFAACgCgAFABEOCo4AAA+GCoflB+8Ad4D2jwuCyoLLgHqAAYD5gd0B3QHtABwAeA"
+  },
+  "$7910": {
+   "addr": 30992,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "AACAAAAgAAEIAABgAAEAB4NgA4AAAAPgAYKgAflAAfvAAB3gAD2gB8LgALKgALLgAB6gAABgAD5gAHdAAHdAAHtAAAcAAB4A"
+  },
+  "$795B": {
+   "addr": 31067,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "AAAQAAEAAASQAAJAAAkAHgtADgAAAA+ABgqAB+UAB+8AAHeAAPaAHwuAAsqAAsuAAHqAAAGAAPmAAd0AAd0AAe0AABwAAHgA"
+  },
+  "$79A6": {
+   "addr": 31142,
+   "dx": 8,
+   "width": 2,
+   "height": 24,
+   "bytes": "AAAAAAeAA4ABgAAAAYADvgOqA9QD/AO+A9p8LgsqCy4B6gAGA+YHdAd0B7QAcAHg"
+  },
+  "$79D9": {
+   "addr": 31193,
+   "dx": 8,
+   "width": 2,
+   "height": 24,
+   "bytes": "AAAAAH+AO4AZgAsAFwAO+A6oD1AP8A/oD2jwuCyoLLgHqAAYD5gd0B3IHsgBwAeA"
+  },
+  "$7A0C": {
+   "addr": 31244,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "AAAAAAAAB4cAA4OAAYWAAM4AANwAAHvgAH6gAD1AAD/AAD3gAD2gB8LgALKgALLgAB6gAABgAD5gAHdAAHdAAHtAAAcAAB4A"
+  },
+  "$7A57": {
+   "addr": 31319,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "AAAAAAAAB/gAA7gAAZgAALAAAXAAAO+AAOqAAPUAAP8AAPeAAPaAHwuAAsqAAsuAAHqAAAGAAPGAAdyAAdyAAeyAABwAAHgA"
+  },
+  "$7AA2": {
+   "addr": 31394,
+   "dx": 0,
+   "width": 2,
+   "height": 24,
+   "bytes": "AAAAAAHgAcABgAAAAYB9wFXAK8A/wHvAW8B0PlTQdNBXgGAAZ8Au4C7gLeAOAAeA"
+  },
+  "$7AD5": {
+   "addr": 31445,
+   "dx": 0,
+   "width": 2,
+   "height": 24,
+   "bytes": "AAAAAAH+AdwBmADQAOgfcBVwCvAP8B7wFvAdDxU0HTQV4BgAGfALuBO4E3gDgAHg"
+  },
+  "$7B08": {
+   "addr": 31496,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "AAAAAAAAAOHgAcHAAaGAAHMAADsAB94ABX4AArwAA/wAB7wABbwAB0PgBU0AB00ABXgABgAABnwAAu4AAu4AAt4AAOAAAHgA"
+  },
+  "$7B53": {
+   "addr": 31571,
+   "dx": 0,
+   "width": 3,
+   "height": 24,
+   "bytes": "AAAAAAAAAB/gAB3AABmAAA0AAA6AAfcAAVcAAK8AAP8AAe8AAW8AAdD4AVNAAdNAAV4AAYAAAY8AATuAATuAATeAADgAAB4A"
+  },
+  "$7C65": {
+   "addr": 31845,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "nk+eT55PgkFcLlwuKBR//kX+Rf5F/kX+f/6mZaZl2Zg="
+  },
+  "$7C88": {
+   "addr": 31880,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "2Zv//4v/ihGK3YrRit2K0Yv/i////6ZlpmXZm9mbf/4="
+  },
+  "$7CAB": {
+   "addr": 31915,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "S/4l/CX8E/geCAnwCfAJ8AgQBeACQAGAAYABgAGAAYA="
+  },
+  "$7CCE": {
+   "addr": 31950,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "uBe4F7mXiZFSylXq9e/0L6/1qfWp9fn/ufe597n3ufc="
+  },
+  "$7CF1": {
+   "addr": 31985,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "ufe597n3ufeJ8Vn2WfYp9Cn8GfgZGAmwCTAJsAnwCRA="
+  },
+  "$7D14": {
+   "addr": 32020,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "CVAJUAlQCfAJ8AnwCfAJ8AgQCfAF4AXgAsACwAGAAYA="
+  },
+  "$7D37": {
+   "addr": 32055,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "gE+AT8BP30/XT9dP1yHXLteiV5xX/jd+N3Ybdgt2DXY="
+  },
+  "$7D5A": {
+   "addr": 32090,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "C3YMfA/2D/YLFgt2CxYL1g0WC/YL9gsWC1YNUgtaC1o="
+  },
+  "$7D7D": {
+   "addr": 32125,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "C/oL+g/6D/oM+gz6B/IE8gTyA/IB8gHyAPIA8gB8ADg="
+  },
+  "$7DA0": {
+   "addr": 32160,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "gAGJ8YnxyfPIE+Xn5efyT/PP+92L0avVq9+r1/vfu90="
+  },
+  "$7DC3": {
+   "addr": 32195,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "u9273Zfpl+mX6Y/xj/GP8Q/wH/gf+B/4HbgZmBGIGYg="
+  },
+  "$7DE6": {
+   "addr": 32230,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "FYgTiBmIFYgbmAmQCZANsAWgBaAH4APAA8ADwAGAAYA="
+  },
+  "$7E09": {
+   "addr": 32265,
+   "dx": 0,
+   "width": 2,
+   "height": 8,
+   "bytes": "//yADkAeQB8gPz/eH+wP+A=="
+  },
+  "$7E1C": {
+   "addr": 32284,
+   "dx": 0,
+   "width": 2,
+   "height": 11,
+   "bytes": "GBj/////uIm6u4qburuKi/////8YGA=="
+  },
+  "$7E35": {
+   "addr": 32309,
+   "dx": 0,
+   "width": 2,
+   "height": 11,
+   "bytes": "D/gQBCPiQcFggyCCb3tOOSQSEAQP+A=="
+  },
+  "$7E4E": {
+   "addr": 32334,
+   "dx": 0,
+   "width": 2,
+   "height": 13,
+   "bytes": "cBz4Pr/umCZwHCAIEBAQEAugD+AFwATAA4A="
+  },
+  "$7E6B": {
+   "addr": 32363,
+   "dx": 0,
+   "width": 2,
+   "height": 9,
+   "bytes": "P/x//v//z//H/8P/YH44PA/w"
+  },
+  "$7E80": {
+   "addr": 32384,
+   "dx": 0,
+   "width": 2,
+   "height": 12,
+   "bytes": "AYADwAfgD/Af+DgcaBZH4i/0H/gP8APA"
+  }
+ },
+ "platforms": [
+  {
+   "flag": 4,
+   "x": 128,
+   "y": 96,
+   "width": 27
+  },
+  {
+   "flag": 6,
+   "x": 120,
+   "y": 184,
+   "width": 136
+  },
+  {
+   "flag": 4,
+   "x": 48,
+   "y": 72,
+   "width": 35
+  },
+  {
+   "flag": 4,
+   "x": 208,
+   "y": 48,
+   "width": 35
+  }
+ ],
+ "platformTiles": {
+  "$76E2": "L3//3ft7cSE=",
+  "$76EA": "vf//9+vdrQQ=",
+  "$76F2": "TP7/Pv/+nAg="
+ },
+ "levelGfx": [
+  31646,
+  31669,
+  32411,
+  32440,
+  32501,
+  32534,
+  32469,
+  32469,
+  32484,
+  32484,
+  32563,
+  32563,
+  32594,
+  32594,
+  32623,
+  32623
+ ],
+ "enemySources": {
+  "$7B9E": {
+   "addr": 31646,
+   "height": 11,
+   "bytes": "AvgC7FGOJ+OT+e/jJ51bwiX0AXgIEA=="
+  },
+  "$7BB5": {
+   "addr": 31669,
+   "height": 11,
+   "bytes": "BHgCjCWmF9/D41uPFj9NmgHkBHAAkA=="
+  },
+  "$7E9B": {
+   "addr": 32411,
+   "height": 14,
+   "bytes": "EkAalGvqX/8//vmfNmz2bnmfP/5P/Q/0FugKRA=="
+  },
+  "$7EB8": {
+   "addr": 32440,
+   "height": 14,
+   "bytes": "CkQW6A/0Tf0//nmf9m42bPmfP/5f/2vqGpQSQA=="
+  },
+  "$7EF5": {
+   "addr": 32501,
+   "height": 16,
+   "bytes": "B+Af+D/8f/5//v///////+f/5//j/3H+ef4//B/4B+A="
+  },
+  "$7F16": {
+   "addr": 32534,
+   "height": 14,
+   "bytes": "B+Af+D/8f/5//v/////n/+f/Y/5x/jn8H/gH4A=="
+  },
+  "$7ED5": {
+   "addr": 32469,
+   "height": 7,
+   "bytes": "H/DHgPvf/+zP8B4AeAA="
+  },
+  "$7EE4": {
+   "addr": 32484,
+   "height": 8,
+   "bytes": "P/x//tmbf/4//A2wB+ABgA=="
+  },
+  "$7F33": {
+   "addr": 32563,
+   "height": 15,
+   "bytes": "A4AFwARAB8AEQHu89F61VpRSe7wEQAfABcAEwAOA"
+  },
+  "$7F52": {
+   "addr": 32594,
+   "height": 14,
+   "bytes": "EAAeAD/AYfjAP///ysDKwP//wD9h+D/AHgAQAA=="
+  },
+  "$7F6F": {
+   "addr": 32623,
+   "height": 14,
+   "bytes": "DDATyD/8f/7//9//3/9InkZuL/QZmBmYD/AGYA=="
+  }
+ },
+ "itemSources": {
+  "$7E80": {
+   "addr": 32384,
+   "dx": 0,
+   "width": 2,
+   "height": 12,
+   "bytes": "AYADwAfgD/Af+DgcaBZH4i/0H/gP8APA"
+  },
+  "$7DC3": {
+   "addr": 32195,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "u9273Zfpl+mX6Y/xj/GP8Q/wH/gf+B/4HbgZmBGIGYg="
+  },
+  "$7C88": {
+   "addr": 31880,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "2Zv//4v/ihGK3YrRit2K0Yv/i////6ZlpmXZm9mbf/4="
+  },
+  "$7E09": {
+   "addr": 32265,
+   "dx": 0,
+   "width": 2,
+   "height": 8,
+   "bytes": "//yADkAeQB8gPz/eH+wP+A=="
+  },
+  "$7BCC": {
+   "addr": 31692,
+   "dx": 0,
+   "width": 3,
+   "height": 16,
+   "bytes": "AfAAB/iGD/7wa/74/P/8/394/77k/35efvm/e//f3f7/P+++b+/EZ9P4O5zgDw7A"
+  },
+  "$7F8C": {
+   "addr": 32652,
+   "dx": 0,
+   "width": 2,
+   "height": 15,
+   "bytes": "AEAEiAJAEJALWCRiU7Q3aopaV+0u9Lf9Xux/9C/8"
+  },
+  "$7CCE": {
+   "addr": 31950,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "uBe4F7mXiZFSylXq9e/0L6/1qfWp9fn/ufe597n3ufc="
+  },
+  "$7E4E": {
+   "addr": 32334,
+   "dx": 0,
+   "width": 2,
+   "height": 13,
+   "bytes": "cBz4Pr/umCZwHCAIEBAQEAugD+AFwATAA4A="
+  },
+  "$7D14": {
+   "addr": 32020,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "CVAJUAlQCfAJ8AnwCfAJ8AgQCfAF4AXgAsACwAGAAYA="
+  },
+  "$7D5A": {
+   "addr": 32090,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "C3YMfA/2D/YLFgt2CxYL1g0WC/YL9gsWC1YNUgtaC1o="
+  },
+  "$7E1C": {
+   "addr": 32284,
+   "dx": 0,
+   "width": 2,
+   "height": 11,
+   "bytes": "GBj/////uIm6u4qburuKi/////8YGA=="
+  },
+  "$7DA0": {
+   "addr": 32160,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "gAGJ8YnxyfPIE+Xn5efyT/PP+92L0avVq9+r1/vfu90="
+  },
+  "$7C65": {
+   "addr": 31845,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "nk+eT55PgkFcLlwuKBR//kX+Rf5F/kX+f/6mZaZl2Zg="
+  },
+  "$7DE6": {
+   "addr": 32230,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "FYgTiBmIFYgbmAmQCZANsAWgBaAH4APAA8ADwAGAAYA="
+  },
+  "$7CAB": {
+   "addr": 31915,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "S/4l/CX8E/geCAnwCfAJ8AgQBeACQAGAAYABgAGAAYA="
+  },
+  "$7E6B": {
+   "addr": 32363,
+   "dx": 0,
+   "width": 2,
+   "height": 9,
+   "bytes": "P/x//v//z//H/8P/YH44PA/w"
+  },
+  "$7FAF": {
+   "addr": 32687,
+   "dx": 0,
+   "width": 2,
+   "height": 15,
+   "bytes": "AIACAAAAACASQAAACaQSyE4YFdIqqVvULS4S9L96"
+  },
+  "$7CF1": {
+   "addr": 31985,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "ufe597n3ufeJ8Vn2WfYp9Cn8GfgZGAmwCTAJsAnwCRA="
+  },
+  "$7C32": {
+   "addr": 31794,
+   "dx": 0,
+   "width": 3,
+   "height": 16,
+   "bytes": "AAAAAAAAAAAAAAAAAAwAAd7AA9/AA+/AA6xwA9/4Af/4AC+wADMAAA4AAAAAAAAA"
+  },
+  "$7E35": {
+   "addr": 32309,
+   "dx": 0,
+   "width": 2,
+   "height": 11,
+   "bytes": "D/gQBCPiQcFggyCCb3tOOSQSEAQP+A=="
+  },
+  "$7D37": {
+   "addr": 32055,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "gE+AT8BP30/XT9dP1yHXLteiV5xX/jd+N3Ybdgt2DXY="
+  },
+  "$7D7D": {
+   "addr": 32125,
+   "dx": 0,
+   "width": 2,
+   "height": 16,
+   "bytes": "C/oL+g/6D/oM+gz6B/IE8gTyA/IB8gHyAPIA8gB8ADg="
+  },
+  "$7BFF": {
+   "addr": 31743,
+   "dx": 0,
+   "width": 3,
+   "height": 16,
+   "bytes": "AAAAAAAAAHwAAOYADv7AH3/gH7/AH9f4D+/8H+/sF9+8Hv/YCb/ABx+AAAAAAAAA"
+  }
+ },
+ "flameSprites": [
+  32652,
+  32687
+ ],
+ "explosionTable": [
+  31794,
+  31743,
+  31692,
+  31794,
+  31743,
+  31692
+ ],
+ "enemyByLevel": [
+  3,
+  17,
+  6,
+  7,
+  15,
+  5,
+  3,
+  15
+ ],
+ "panel": {
+  "labels": [
+   {
+    "x": 24,
+    "y": 0,
+    "attr": 71,
+    "text": "1UP"
+   },
+   {
+    "x": 120,
+    "y": 0,
+    "attr": 69,
+    "text": "HI"
+   },
+   {
+    "x": 216,
+    "y": 0,
+    "attr": 71,
+    "text": "2UP"
+   }
+  ],
+  "scoreAt": {
+   "player1": 16417,
+   "hiScore": 16429,
+   "player2": 16441
+  },
+  "livesAt": {
+   "player1": 64,
+   "player2": 176
+  },
+  "digits": 6,
+  "lifeIcon": "GCQ8flo8PGY="
+ }
+}

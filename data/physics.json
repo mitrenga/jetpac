@@ -1,0 +1,48 @@
+{
+ "note": "konstanty fyziky Jetmana, přečtené jako operandy instrukcí (tools/dumpphysics.py); že z nich vychází pohyb originálu, dokazuje tools/matchphysics.js",
+ "constants": {
+  "BOTTOM": {
+   "value": 192,
+   "addr": 29857,
+   "note": "spodek obrazovky ($74A0: CP $C0)"
+  },
+  "CEILING": {
+   "value": 42,
+   "addr": 29861,
+   "note": "strop hrací plochy ($74A4: CP $2A)"
+  },
+  "MAX_SPEED_X": {
+   "value": 64,
+   "addr": 29699,
+   "note": "strop vodorovné rychlosti ($7402: CP $40)"
+  },
+  "MAX_SPEED_Y": {
+   "value": 63,
+   "addr": 29797,
+   "note": "strop svislé rychlosti ($7464: CP $3F)"
+  },
+  "WALK_HOLD": {
+   "value": 32,
+   "addr": 30128,
+   "note": "počítadlo kroku chůze ($75AD: LD (IX+$05),$20)"
+  }
+ },
+ "derived": {
+  "ACCELERATION": {
+   "value": 8,
+   "note": "zrychlení za krok: $73FD ADD A,$08 nad -($5DCA), a $5DCA je za hry nula ($6333 vynuluje $5CF4-$5FFF)"
+  },
+  "EDGE_MARGIN": {
+   "value": 18,
+   "note": "okraj plošiny ($7637: ADD A,$12)"
+  },
+  "STEP_SHIFT": {
+   "value": 8,
+   "note": "posun za krok = rychlost * 8 v 1/256 px ($7414: třikrát ADD HL,HL)"
+  },
+  "TAKEOFF_LIFT": {
+   "value": 2,
+   "note": "odskok od plošiny ($75D9: dvakrát DEC (IX+$02))"
+  }
+ }
+}

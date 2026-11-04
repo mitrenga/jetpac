@@ -1,0 +1,110 @@
+{
+ "note": "výchozí stav z originálu (tools/mkglobal.py): záznamy entit, které si hra kopíruje do $5D00 a $5D30, a konstanty, které si nastaví při startu hry",
+ "lives": 4,
+ "acceleration": 4,
+ "lives2": 5,
+ "hiScore": 0,
+ "templates": {
+  "jetman": [
+   1,
+   128,
+   183,
+   71,
+   0,
+   0,
+   0,
+   36
+  ],
+  "levelEntities": [
+   9,
+   168,
+   183,
+   2,
+   1,
+   0,
+   0,
+   28,
+   4,
+   48,
+   71,
+   71,
+   0,
+   0,
+   16,
+   24,
+   4,
+   128,
+   95,
+   71,
+   1,
+   0,
+   8,
+   24
+  ],
+  "treasure": [
+   4,
+   0,
+   32,
+   67,
+   1,
+   0,
+   24,
+   24
+  ],
+  "fuel": [
+   14,
+   0,
+   32,
+   0,
+   0,
+   0,
+   0,
+   24
+  ],
+  "enemy": [
+   3,
+   0,
+   0,
+   66,
+   128,
+   4,
+   0,
+   28
+  ]
+ },
+ "templateAddresses": {
+  "jetman": 24592,
+  "levelEntities": 24600,
+  "treasure": 24624,
+  "fuel": 24632,
+  "enemy": 28107
+ },
+ "enemyByLevel": [
+  3,
+  17,
+  6,
+  7,
+  15,
+  5,
+  3,
+  15
+ ],
+ "spawnPlaces": [
+  8,
+  32,
+  40,
+  48,
+  56,
+  64,
+  88,
+  96,
+  120,
+  128,
+  136,
+  192,
+  224,
+  8,
+  88,
+  96
+ ]
+}
