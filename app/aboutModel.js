@@ -9,22 +9,12 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
 // begin code
 
 /**
- * ABOUT GAME as a screen of its own — the original's game selection screen
- * (JETPAC GAME SELECTION, $6260: black with the panel on it) with the panel above
- * it and the about text and its buttons laid over the black middle of the
- * screen. Until 2026-09-07 it was a dialog over the menu (AboutEntity);
- * it became a screen so that the prelude can play under it.
+ * ABOUT GAME as a screen of its own: the original's menu screen (black with
+ * the panel on it, GameAreaEntity.panelScreen) with the copyright line on the
+ * bottom row, and the about text and its buttons below the panel, all of its
+ * width, in the proportional ROM font.
  *
- * ★ The copyright line sits on the bottom row, where the original's own menu screen has it ($6283) — and
- * **the music plays here too**: $B3EC starts MusicData_GameComplete through PlayAudio_WaitKey
- * ($BD51), the variant that reads the keyboard between the notes and returns
- * at the first key. So the prelude stops on **any** input — a key, a mouse
- * button, a touch or a gamepad button — before the input reaches whatever it
- * was aimed at, and it does not start again.
- *
- * The menu is silent (menuModel.js), so this is the first place the browser
- * has had its gesture; the menu asks for it through ZXWaitForAudioEventEntity
- * before it opens this screen.
+ * ★ Jetpac has no music, so this screen is silent like the menu.
  *
  * The title bar keeps the dialog's counter: five clicks on it show the game
  * statistics from the server, five more the system information, five more the
@@ -43,21 +33,22 @@ export class AboutModel extends AbstractModel {
     this.subtitleEntity = null;
     this.copyrightEntity = null;
     this.aboutEntity = null;
-    this.musicPlaying = false;
 
-    // the about panel in the black middle of the frame: cells
-    // 4-27 by 5-20 are 192 x 128 px, 4 px kept free on either side as the menu
-    // does (menuModel.js)
-    this.panelX = 36;
-    this.panelY = 42;
-    this.panelWidth = 184;
-    this.panelHeight = 126;
+    // the about panel under the panel of the original's screen, all of its
+    // width: the title one empty row below the score row (row 3), one more
+    // empty row, the text from row 5, the buttons on row 21 above the
+    // copyright line on row 23 — all of it in the proportional ROM font
+    this.panelX = 0;
+    this.panelY = 3*8;
+    this.panelWidth = 32*8;
+    this.panelHeight = 20*8;
     this.panelBkColor = ZXColor.black;
 
-    this.aboutText = 'SABRE WULF IS A REMAKE OF THE 1984 ULTIMATE PLAY THE GAME CLASSIC FOR THE ZX SPECTRUM.\n' +
-                    'SABREMAN IS LOST IN A JUNGLE OF 256 SCREENS. FIND THE FOUR PIECES OF THE AMULET, GET PAST THE KEEPER ' +
-                    'OF THE GATE AND ESCAPE. THE ORCHIDS BLOOM FOR SECONDS AND CHANGE WHAT HE CAN DO; THE WULF ITSELF CANNOT BE KILLED.\n' +
-                    'THE HIGH SCORES ARE KEPT IN THE HALL OF FAME ON THE SERVER.';
+    this.aboutText = 'Jetpac is a remake of the 1983 Ultimate Play the Game classic for the 16K ZX Spectrum.\n' +
+                    'Jetman\'s rocket lies in pieces on an alien planet. Stack the parts on its base, fill the tank with ' +
+                    'six loads of fuel and take off for the next planet, while waves of aliens pour in from both sides ' +
+                    'of the screen. Treasure falling from the sky is worth extra points.\n' +
+                    'The high scores are kept in the hall of fame on the server.';
     this.statsText = 'error:\nstatistics data not available!';
     this.clickCounter = 0;
   } // constructor
@@ -75,7 +66,7 @@ export class AboutModel extends AbstractModel {
 
     // the data files: at once from localStorage, or from the server when
     // they are missing there (R-062)
-    this.loadDataFiles(['sprites', 'sounds'], (files, error) => this.initData(files, error));
+    this.loadDataFiles(['sprites'], (files, error) => this.initData(files, error));
   } // init
 
   /**
@@ -109,32 +100,18 @@ export class AboutModel extends AbstractModel {
     this.aboutEntity = new AbstractEntity(this.desktopEntity, this.panelX, this.panelY, this.panelWidth, this.panelHeight, false, ZXColor.black);
     this.desktopEntity.addEntity(this.aboutEntity);
     var w = this.panelWidth, h = this.panelHeight;
-    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, this.app.fonts.fonts5x5, 0, 0, w, 9, 'ABOUT GAME', {id: 'clickLabel'}, [], ZXColor.brightRed, false, {align: 'center', topMargin: 2, member: 'titleBar', hoverColor: ZXColor.black, clickColor: ZXColor.black}));
-    this.aboutEntity.addEntity(new AbstractEntity(this.aboutEntity, 1, 9, w-2, h-10, false, this.panelBkColor));
-    this.aboutEntity.addEntity(new TextEntity(this.aboutEntity, this.app.fonts.fonts5x5, 1, 9, w-2, h-25, this.aboutText, ZXColor.brightWhite, false, {align: 'justify', textWrap: true, margin: 2, member: 'aboutText'}));
-    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, this.app.fonts.fonts5x5, 3, h-16, 54, 13, 'MORE INFO', {id: 'openAboutURL'}, ['Enter', 'GamepadOK'], ZXColor.brightWhite, ZXColor.green, {align: 'center', margin: 4}));
-    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, this.app.fonts.fonts5x5, w-39, h-16, 36, 13, 'CLOSE', {id: 'closeAbout'}, ['Escape', 'GamepadExit'], ZXColor.brightWhite, ZXColor.blue, {align: 'center', margin: 4}));
+    var fonts = this.app.fonts.zxFonts8x8;
+    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, fonts, 0, 0, w, 8, 'ABOUT GAME', {id: 'clickLabel'}, [], ZXColor.brightRed, false, {align: 'center', member: 'titleBar', hoverColor: ZXColor.black, clickColor: ZXColor.black}));
+    this.aboutEntity.addEntity(new TextEntity(this.aboutEntity, fonts, 0, 2*8, w, h-5*8, this.aboutText, ZXColor.brightWhite, false, {align: 'justify', textWrap: true, member: 'aboutText'}));
+    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, fonts, 0, h-2*8-2, 76, 12, 'MORE INFO', {id: 'openAboutURL'}, ['Enter', 'GamepadOK'], ZXColor.brightWhite, ZXColor.green, {align: 'center', margin: 2}));
+    this.aboutEntity.addEntity(new ButtonEntity(this.aboutEntity, fonts, w-52, h-2*8-2, 52, 12, 'CLOSE', {id: 'closeAbout'}, ['Escape', 'GamepadExit'], ZXColor.brightWhite, ZXColor.blue, {align: 'center', margin: 2}));
 
     this.fetchData('stats.db', false, {});
 
-    this.sendEvent(0, {id: 'openAudioBus', bus: 'sounds', options: {muted: this.app.muted.sounds}});
-
-    // ★ the prelude of the original's game selection screen: $B3EC plays
-    // MusicData_GameComplete through PlayAudio_WaitKey ($BD51), thirty seconds
-    // of Bach until the player touches the controls (data/music.json).
-    // An event, not a direct playMusic(): openAudioBus goes through the event
-    // queue and playSound on a bus not yet open is silent.
-    this.sendEvent(0, {id: 'playSound', bus: 'sounds', sound: 'music:gameComplete', options: {waitKey: true}});
-    this.musicPlaying = true;
 
     this.app.stack.flashState = false;
     this.sendEvent(330, {id: 'changeFlashState'});
   } // initData
-
-  shutdown() {
-    super.shutdown();
-    this.sendEvent(0, {id: 'stopAllAudioBuses'});
-  } // shutdown
 
   setData(data) {
     this.statsText = '';
@@ -149,18 +126,6 @@ export class AboutModel extends AbstractModel {
 
   errorData(error) {
   } // errorData
-
-  /**
-   * Cuts the prelude off, once. Every input on this screen ends it, the way
-   * PlayAudio_WaitKey ($BD51) ends it in the original.
-   * @returns {void}
-   */
-  stopMusic() {
-    if (this.musicPlaying) {
-      this.musicPlaying = false;
-      this.sendEvent(0, {id: 'stopAudioBus', bus: 'sounds'});
-    }
-  } // stopMusic
 
   /**
    * Switches the panel between the about text, the statistics and the system
@@ -195,13 +160,6 @@ export class AboutModel extends AbstractModel {
   } // updateAbout
 
   handleEvent(event) {
-    // ★ before the entities get it: any input — a key, Mouse1, Touch, a
-    // gamepad button (all of them arrive as keyPress) — cuts the prelude off,
-    // whatever button it was aimed at.
-    if (event.id == 'keyPress') {
-      this.stopMusic();
-    }
-
     if (super.handleEvent(event)) {
       return true;
     }
@@ -236,10 +194,6 @@ export class AboutModel extends AbstractModel {
           this.updateAbout();
         }
         return false;
-
-      case 'errorAudioBus':
-        this.app.showErrorMessage(event.error, 'reopen');
-        return true;
     }
 
     return false;
