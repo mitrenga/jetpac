@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Jetman, exactly as the original draws him: the sprite the game keeps at
+     $7AA2 (type 2 — standing on a platform — facing right, shift 0), one
+     rectangle per run of pixels. Nothing is redrawn: tools/dumpsprites.py took
+     it out of the program and tools/matchscreen.js checks this very shape
+     against the original's own video memory. Here one sprite pixel is three
+     units of a 96x96 field, so the shot has room next to him.
+
+     The shot keeps what the original pokes into the screen ($7024): solid
+     pixels on one row, on the row of Jetman's gun, thinning out at the tail as
+     $703F ($E0 off the last byte) erodes it from the left. Its colours are
+     decoration, not the original's — a bolt there carries one attribute from
+     its own record (+7). These run through the bright ZX palette, white at the
+     head. The background is grey, not the game's black. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="1024" height="1024" shape-rendering="crispEdges">
+  <rect width="96" height="96" fill="#4a4a4a"/>
+  <!-- the shot: eroded tail to head, along the bright palette -->
+  <g>
+    <rect x="52" y="45" width="4" height="3" fill="#ff0000"/>
+    <rect x="56" y="45" width="6" height="3" fill="#ff00ff"/>
+    <rect x="62" y="45" width="6" height="3" fill="#0000ff"/>
+    <rect x="68" y="45" width="6" height="3" fill="#00ffff"/>
+    <rect x="74" y="45" width="6" height="3" fill="#00ff00"/>
+    <rect x="80" y="45" width="6" height="3" fill="#ffff00"/>
+    <rect x="86" y="45" width="10" height="3" fill="#ffffff"/>
+  </g>
+  <g fill="#ffffff">
+    <rect x="18" y="15" width="12" height="3"/>
+    <rect x="15" y="18" width="9" height="3"/>
+    <rect x="9" y="21" width="3" height="3"/>
+    <rect x="15" y="21" width="6" height="3"/>
+    <rect x="24" y="21" width="12" height="3"/>
+    <rect x="9" y="24" width="3" height="3"/>
+    <rect x="15" y="24" width="9" height="3"/>
+    <rect x="27" y="24" width="9" height="3"/>
+    <rect x="9" y="27" width="3" height="3"/>
+    <rect x="15" y="27" width="9" height="3"/>
+    <rect x="27" y="27" width="9" height="3"/>
+    <rect x="6" y="30" width="6" height="3"/>
+    <rect x="18" y="30" width="15" height="3"/>
+    <rect x="6" y="33" width="6" height="3"/>
+    <rect x="6" y="36" width="3" height="3"/>
+    <rect x="12" y="36" width="3" height="3"/>
+    <rect x="18" y="36" width="12" height="3"/>
+    <rect x="6" y="39" width="9" height="3"/>
+    <rect x="18" y="39" width="3" height="3"/>
+    <rect x="27" y="39" width="6" height="3"/>
+    <rect x="36" y="39" width="3" height="3"/>
+    <rect x="6" y="42" width="3" height="3"/>
+    <rect x="12" y="42" width="3" height="3"/>
+    <rect x="18" y="42" width="3" height="3"/>
+    <rect x="27" y="42" width="6" height="3"/>
+    <rect x="36" y="42" width="3" height="3"/>
+    <rect x="6" y="45" width="9" height="3"/>
+    <rect x="18" y="45" width="3" height="3"/>
+    <rect x="33" y="45" width="15" height="3"/>
+    <rect x="6" y="48" width="3" height="3"/>
+    <rect x="12" y="48" width="6" height="3"/>
+    <rect x="21" y="48" width="12" height="3"/>
+    <rect x="6" y="51" width="12" height="3"/>
+    <rect x="21" y="51" width="12" height="3"/>
+    <rect x="9" y="54" width="24" height="3"/>
+    <rect x="9" y="57" width="3" height="3"/>
+    <rect x="15" y="57" width="3" height="3"/>
+    <rect x="21" y="57" width="12" height="3"/>
+    <rect x="6" y="60" width="3" height="3"/>
+    <rect x="12" y="60" width="3" height="3"/>
+    <rect x="18" y="60" width="3" height="3"/>
+    <rect x="24" y="60" width="9" height="3"/>
+    <rect x="6" y="63" width="15" height="3"/>
+    <rect x="24" y="63" width="9" height="3"/>
+    <rect x="24" y="66" width="6" height="3"/>
+    <rect x="24" y="72" width="6" height="3"/>
+    <rect x="24" y="75" width="9" height="3"/>
+    <rect x="24" y="78" width="12" height="3"/>
+  </g>
+</svg>
