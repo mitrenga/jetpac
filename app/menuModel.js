@@ -12,6 +12,7 @@ const { ZXWaitForAudioEventEntity } = await import('./svision/js/platform/canvas
 const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?ver='+window.srcVersion);
 const { ZXDialogEntity } = await import('./svision/js/platform/canvas2D/zx/zxDialogEntity.js?ver='+window.srcVersion);
 const { ZXDialogProperties } = await import('./svision/js/platform/canvas2D/zx/zxDialogProperties.js?ver='+window.srcVersion);
+const { DialogTheme } = await import('./svision/js/platform/canvas2D/dialogs/dialogTheme.js?ver='+window.srcVersion);
 const { ZXVideoRAMEntity } = await import('./svision/js/platform/canvas2D/zx/zxVideoRAMEntity.js?ver='+window.srcVersion);
 const { GameAreaEntity } = await import('./gameAreaEntity.js?ver='+window.srcVersion);
 // begin code
@@ -155,6 +156,26 @@ export class MenuModel extends AbstractModel {
       },
       // the gesture for audio: the popup of the about panel, black on yellow
       waitForAudioEvent: {frameColor: ZXColor.black, bkColor: ZXColor.brightYellow, theme: {penColor: ZXColor.black}}
+    });
+
+    // the player name dialog: the same black window, but its title and its
+    // CANCEL / OK in the proportional ROM font, as the about screen and the
+    // hall of fame are, the keys of its keyboard bright white and a held
+    // CAPS SHIFT / SYMBOL SHIFT bright yellow; the other dialogs keep the
+    // menu's. The window is a row taller at either end (34-176 instead of
+    // 42-168): the title goes a row up, CANCEL / OK a row down, and the
+    // keyboard, centred between them, stays where it was. A plain deep merge
+    // over the menu's properties: ZXDialogProperties.merge would fill them
+    // in from the ZX defaults again (the yellow window of Manic Miner)
+    this.playerNameProperties = DialogTheme.mergeDeep(this.dialogProperties, {
+      y: 34,
+      height: 142,
+      fonts: 'zxFonts8x8',
+      theme: {
+        buttonFont: 'zxFonts8x8',
+        keyboardButtonsBkColor: ZXColor.brightWhite,
+        keyboardButtonsShiftColor: ZXColor.brightYellow
+      }
     });
 
     this.titleEntity = null;
@@ -311,8 +332,8 @@ export class MenuModel extends AbstractModel {
    * @param {string} title - The text of the title bar.
    * @param {Function} contentFactory - Called with the window, returns the contents entity.
    */
-  openDialog(title, contentFactory) {
-    var p = this.dialogProperties;
+  openDialog(title, contentFactory, properties) {
+    var p = properties || this.dialogProperties;
     this.dialogEntity = new ZXDialogEntity(this.desktopEntity, p.x, p.y, p.width, p.height, title, p, contentFactory);
     this.desktopEntity.addModalEntity(this.dialogEntity);
     // while the dialog is open the bottom band shows the copyright line of the
@@ -363,7 +384,7 @@ export class MenuModel extends AbstractModel {
       case 'startGame':
         this.app.setPlayers(event.players);
         if (!this.app.playerName.length) {
-          this.openDialog('PLAYER NAME', (dialog) => new ZXPlayerNameEntity(dialog, dialog.innerX, dialog.innerY, dialog.innerWidth, dialog.innerHeight, true, this.dialogProperties));
+          this.openDialog('PLAYER NAME', (dialog) => new ZXPlayerNameEntity(dialog, dialog.innerX, dialog.innerY, dialog.innerWidth, dialog.innerHeight, true, this.playerNameProperties), this.playerNameProperties);
           return true;
         } else {
           if (this.app.inputEventsManager.needEventForAudio()) {
@@ -378,7 +399,7 @@ export class MenuModel extends AbstractModel {
         return true;
 
       case 'setPlayerName':
-        this.openDialog('PLAYER NAME', (dialog) => new ZXPlayerNameEntity(dialog, dialog.innerX, dialog.innerY, dialog.innerWidth, dialog.innerHeight, false, this.dialogProperties));
+        this.openDialog('PLAYER NAME', (dialog) => new ZXPlayerNameEntity(dialog, dialog.innerX, dialog.innerY, dialog.innerWidth, dialog.innerHeight, false, this.playerNameProperties), this.playerNameProperties);
         return true;
 
       case 'showHallOfFame':
