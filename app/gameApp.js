@@ -72,7 +72,8 @@ export class GameApp extends AbstractApp {
     this.appIconSprite = appIconSprite;
 
     this.audioManager = new AudioManager(this);
-    // one switch for both buses: the music follows the sounds (menuModel.js)
+    // one switch, SOUNDS in the pause menu (pauseGameEntity.js) and in the
+    // main menu; there is no key for it
     this.muted = {sounds: false};
 
     // ★ No game font is loaded into any of these, and that is the finding,
@@ -113,6 +114,10 @@ export class GameApp extends AbstractApp {
     this.fonts.fonts5x5.addSpace('␣', {width: 2, breaking: false, stretch: true});
 
     this.fonts.zxFonts8x8.addGlyphs('‗⋅', '000000000000F8F80000000030000000');
+    // the arrows, for the arrow keys in SETTINGS (Tool.prettyKey), and the
+    // block cursor of the key remap dialog: the ROM has none of them, so they
+    // are drawn here in its style
+    this.fonts.zxFonts8x8.addGlyphs('←→↑↓█', '0010307E3010000000080C7E0C0800000010387C10101000001010107C381000FEFEFEFEFEFEFEFE');
     // the 16 x 16 close cross of the panel button (GameInfoEntity.pauseButton):
     // a bold X, symmetric about both axes, in four 8 x 8 quarters — top left,
     // top right, bottom left, bottom right — set as two lines of two glyphs
@@ -120,11 +125,11 @@ export class GameApp extends AbstractApp {
     this.fonts.zxFonts8x8.addSpace('␣', {width: 3, breaking: false, stretch: false});
     this.fonts.zxFonts8x8.addSpace('▭', {width: 4, breaking: false, stretch: false});
 
-    // The original is played on Q W E R T — Q left, W right, E down, R up and
-    // T the combat button — with CAPS SHIFT or SPACE/BREAK for the pause
-    // ("Continuous Pause" on the inlay, ZADANI chap. 1). Movement is **eight
-    // way**: "Full 8 Way Movement" on the box, so two directions held at once
-    // are a diagonal, not a conflict. The remake's defaults are the arrow keys
+    // ★ The original is played on whole rows of keys: the top row is the
+    // thrust, the middle row the laser, the bottom row split into left and
+    // right ($733E, $7374, $7393), CAPS SHIFT held for the pause ($69BD).
+    // Thrust and a direction held at once are a climb to the side, not a
+    // conflict. The remake's defaults are the arrow keys
     // and SPACE for the laser, as in the sibling remakes (getControls()), and
     // **every key comes from SETTINGS** — nothing is accepted beside the
     // configured keys, so the remap dialog always tells the truth. The mouse
@@ -137,8 +142,7 @@ export class GameApp extends AbstractApp {
           {action: 'right', label: 'FLY RIGHT'},
           {action: 'thrust', label: 'THRUST'},
           {action: 'brake', label: 'BRAKE'},
-          {action: 'fire', label: 'LASER'},
-          {action: 'sounds', label: 'MUTE SOUNDS'}
+          {action: 'fire', label: 'LASER'}
         ]
       },
       gamepads: {
@@ -296,7 +300,7 @@ export class GameApp extends AbstractApp {
         // Kempston the original reads it as DOWN ($7473), and on the keyboard
         // as the whole number row.
         result = {left: 'ArrowLeft', right: 'ArrowRight', thrust: 'ArrowUp',
-                  brake: 'ArrowDown', fire: ' ', sounds: 'S'};
+                  brake: 'ArrowDown', fire: ' '};
         break;
       case 'touchscreen':
         result = {supported: false, type: 'leftLaser'};

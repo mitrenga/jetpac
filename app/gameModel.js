@@ -284,10 +284,6 @@ export class GameModel extends AbstractModel {
           case 'RetryTouch':
             this.setControl(event.action, true);
             return true;
-          case this.app.controls.keyboard.sounds:
-            this.app.muted.sounds = !this.app.muted.sounds;
-            this.sendEvent(0, {id: 'muteAudioBus', bus: 'sounds', muted: this.app.muted.sounds});
-            return true;
         }
         var action = this.controlAction(key);
         if (action !== false) {
@@ -603,103 +599,8 @@ export class GameModel extends AbstractModel {
   /**
    * The finger moved. The stick is **absolute**: the direction is where the
    * finger has moved to from where it landed, with a dead zone of
-   * `joystickStep` in the middle. It holds two directions at once, because
-   * the original walks in eight directions and a diagonal is two of them.
-   * @param {Object} event - The touch event.
-   */
-  touchMove(event) {
-    var controls = this.app.inputEventsManager.touchesGameControls;
-    var control = controls[event.identifier];
-    if (control === undefined || control.type != 'joystick') {
-      return;
-    }
-    control.at = {x: event.x, y: event.y};
-    var step = this.app.controlsOptions.touchscreen.joystickStep;
-    var axis = {x: false, y: false};
-    if (control.control == 'horizontal' || control.control == 'both') {
-      if (event.x-control.origin.x < -step) { axis.x = control.actions.left; }
-      if (event.x-control.origin.x > step) { axis.x = control.actions.right; }
-    }
-    if (control.control == 'vertical' || control.control == 'both') {
-      if (event.y-control.origin.y < -step) { axis.y = control.actions.up; }
-      if (event.y-control.origin.y > step) { axis.y = control.actions.down; }
-    }
-    var next = [axis.x, axis.y].filter((action) => action !== false);
-    var previous = control.action === false ? [] : [].concat(control.action);
-    if (previous.length == next.length && previous.every((action) => next.indexOf(action) !== -1)) {
-      return;
-    }
-    control.action = next.length == 0 ? false : (next.length == 1 ? next[0] : next);
-    previous.forEach((action) => {
-      if (next.indexOf(action) === -1) {
-        this.releaseTouchAction(action);
-      }
-    });
-    next.forEach((action) => this.setControl(action, true));
-  } // touchMove
-
-  /**
-   * The finger moved. The stick is **absolute**: the direction is where the
-   * finger has moved to from where it landed, with a dead zone of
-   * `joystickStep` in the middle. It holds two directions at once, because
-   * the original walks in eight directions and a diagonal is two of them.
-   * @param {Object} event - The touch event.
-   */
-  touchMove(event) {
-    var controls = this.app.inputEventsManager.touchesGameControls;
-    var control = controls[event.identifier];
-    if (control === undefined || control.type != 'joystick') {
-      return;
-    }
-    control.at = {x: event.x, y: event.y};
-    var step = this.app.controlsOptions.touchscreen.joystickStep;
-    var axis = {x: false, y: false};
-    if (control.control == 'horizontal' || control.control == 'both') {
-      if (event.x-control.origin.x < -step) { axis.x = control.actions.left; }
-      if (event.x-control.origin.x > step) { axis.x = control.actions.right; }
-    }
-    if (control.control == 'vertical' || control.control == 'both') {
-      if (event.y-control.origin.y < -step) { axis.y = control.actions.up; }
-      if (event.y-control.origin.y > step) { axis.y = control.actions.down; }
-    }
-    var next = [axis.x, axis.y].filter((action) => action !== false);
-    var previous = control.action === false ? [] : [].concat(control.action);
-    if (previous.length == next.length && previous.every((action) => next.indexOf(action) !== -1)) {
-      return;
-    }
-    control.action = next.length == 0 ? false : (next.length == 1 ? next[0] : next);
-    previous.forEach((action) => {
-      if (next.indexOf(action) === -1) {
-        this.releaseTouchAction(action);
-      }
-    });
-    next.forEach((action) => this.setControl(action, true));
-  } // touchMove
-
-  updateFps(timestamp) {
-    if (!this.fpsEntity) {
-      return;
-    }
-    this.fps.frames++;
-    if (this.fps.since === false) {
-      this.fps.since = timestamp;
-      return;
-    }
-    var elapsed = timestamp-this.fps.since;
-    if (elapsed >= 1000) {
-      this.fpsEntity.setText(Math.round(this.fps.frames*1000/elapsed)+'/'+Math.round(this.fps.workerFrames*1000/elapsed)+'/'+Math.round(this.fps.ticks*1000/elapsed)+' FPS');
-      this.fps.frames = 0;
-      this.fps.workerFrames = 0;
-      this.fps.ticks = 0;
-      this.fps.since = timestamp;
-    }
-  } // updateFps
-
-  /**
-   * The finger moved. The stick is **absolute**: the direction is where the
-   * finger has moved to from where it landed, with a dead zone of
-   * `joystickStep` in the middle. It holds two directions at once, because
-   * the original walks in eight directions and a diagonal is two of them.
+   * `joystickStep` in the middle. It holds two directions at once: thrust
+   * and left or right together are a climb to the side.
    * @param {Object} event - The touch event.
    */
   touchMove(event) {

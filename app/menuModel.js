@@ -169,8 +169,26 @@ export class MenuModel extends AbstractModel {
       // and the settings window all the width of the desktop
       x: 0,
       width: 256,
-      // the remap dialog covers the whole settings window, so it grows with it
-      remapKeys: {width: 256, height: 152}
+      // the remap dialog covers the whole settings window, so it grows with
+      // it; it and the gamepad list are in the proportional ROM font as well
+      remapKeys: {
+        width: 256,
+        height: 152,
+        fonts: 'zxFonts8x8',
+        theme: {labelFont: 'zxFonts8x8', buttonFont: 'zxFonts8x8'}
+      },
+      // eight rows of the font's height plus 5 in a 1 px frame
+      // (SelectingGamepadEntity.windowHeight): 106 px instead of 83
+      selectingGamepad: {
+        height: 106,
+        fonts: 'zxFonts8x8',
+        theme: {labelFont: 'zxFonts8x8'}
+      },
+      // its items in the proportional ROM font too: all of the labels fit in
+      // the full width (the widest is FLY RIGHT); only the mouse tab's
+      // CONTROL IS DISABLED is 15 px wider than its area and spills into the
+      // margins on either side
+      theme: {labelFont: 'zxFonts8x8'}
     });
     // the volume dialog: rows 3-22 as well, its labels in the proportional
     // ROM font too, and the window 240 px wide (8-248) instead of 192, because
