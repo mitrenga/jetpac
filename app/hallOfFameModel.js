@@ -6,6 +6,7 @@ const { TextEntity } = await import('./svision/js/platform/canvas2D/textEntity.j
 const { ButtonEntity } = await import('./svision/js/platform/canvas2D/buttonEntity.js?ver='+window.srcVersion);
 const { SlidingTextEntity } = await import('./svision/js/platform/canvas2D/slidingTextEntity.js?ver='+window.srcVersion);
 const { GameAreaEntity } = await import('./gameAreaEntity.js?ver='+window.srcVersion);
+const { JetpacLogoEntity } = await import('./jetpacLogoEntity.js?ver='+window.srcVersion);
 const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?ver='+window.srcVersion);
 // begin code
 
@@ -85,6 +86,9 @@ export class HallOfFameModel extends AbstractModel {
     // the original's own menu screen: black with the panel on it
     this.screenEntity = GameAreaEntity.panelScreen(this);
     if (this.screenEntity) {
+      // the JETPAC logo where the original prints 2UP (ZADANI.md §10/9), as
+      // on the menu and in the game
+      this.desktopEntity.addEntity(new JetpacLogoEntity(this.desktopEntity));
       // ★ the copyright line of the original's own menu screen, where it has
       // it: the bottom row, bright white ($6283 prints it at $B800, i.e. row
       // 23, from the string at $6040)
