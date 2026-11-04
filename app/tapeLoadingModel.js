@@ -2,6 +2,7 @@ const { AbstractModel } = await import('./svision/js/abstractModel.js?ver='+wind
 const { BorderEntity } = await import('./borderEntity.js?ver='+window.srcVersion);
 const { ZXVideoRAMEntity } = await import('./svision/js/platform/canvas2D/zx/zxVideoRAMEntity.js?ver='+window.srcVersion);
 const { ZXVideoRAM } = await import('./svision/js/platform/canvas2D/zx/zxVideoRAM.js?ver='+window.srcVersion);
+const { ZXRomPrint } = await import('./svision/js/platform/canvas2D/zx/zxRomPrint.js?ver='+window.srcVersion);
 const { TextEntity } = await import('./svision/js/platform/canvas2D/textEntity.js?ver='+window.srcVersion);
 const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?ver='+window.srcVersion);
 // begin code
@@ -40,9 +41,17 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
  * bytes take.
  *
  * ★ And the message on the screen is the original's own: its BASIC loader
- * prints `JETPAC IS LOADING` and a flashing `PLEASE WAIT` **before** it loads
- * the picture, and sets `INK 0: PAPER 0` afterwards so that the `Bytes:`
- * reports of the blocks that follow are invisible.
+ * (`PAPER 0: INK 7: BRIGHT 1: CLS`) prints `JETPAC IS LOADING` at 9,7 and
+ * `PLEASE WAIT` in **INVERSE** (code 20, not FLASH) at 12,10 **before** it
+ * loads the picture, then `PRINT AT 0,0` — so the ROM's `Bytes: JPSP` lands
+ * on row 2 — and the picture's bytes overwrite all of it as they arrive. The
+ * border stays white (no BORDER in the loader) and the two lines of the lower
+ * screen stay black on white ($38). After the picture it sets `INK 0: PAPER
+ * 0` so that the `Bytes:` reports of the blocks that follow are invisible.
+ * Measured on the re-release TZX in the simulator (SkoolKit tap2sna at tape
+ * speed, the video memory every frame): the screen composed here equals the
+ * original's at the frame of `JETPAC IS LOADING` and at the frame of
+ * `Bytes: JPSP`, 6912 bytes each, 0 differences.
  */
 export class TapeLoadingModel extends AbstractModel {
 
@@ -54,13 +63,14 @@ export class TapeLoadingModel extends AbstractModel {
     this.commandPhase = 0;
     this.command = ['K', 'LOAD L', 'LOAD "L', 'LOAD ""L', ''];
     this.programNameEntity = null;
-    this.loadingMessageEntity = null;
-    this.waitMessageEntity = null;
     this.screenEntity = null;
+    // the ROM's printing into screenEntity, from the moment the loader runs
+    this.romPrint = null;
     this.app.stack.flashState = false;
     this.tapeBreak = false;
-    // the line BREAK reports: 0:1 while the BASIC program is still coming,
-    // 10:7 once it runs and is the one doing the loading
+    // the line:statement BREAK reports: 0:1 while the BASIC program is still
+    // coming, 1:13 while the loader waits for the picture (LOAD "" SCREEN$ is
+    // its 13th statement), 1:17 once the picture is in (the first LOAD "" CODE)
     this.tapeBreakLine = '0:1';
     this.tapePhase = false;
     // The blocks are the tape's own, in its own order (tools/tapinfo.py):
@@ -80,21 +90,21 @@ export class TapeLoadingModel extends AbstractModel {
       // the program runs: it clears the screen, beeps its five notes and
       // prints its own message before it asks for the picture
       {id: 'pause', duration: 1000, event: {id: 'showLoadingMessage'}},
-      {id: 'pause', duration: 1200, event: {id: 'showLoadingScreen'}},
+      {id: 'pause', duration: 1200},
 
       // the picture: header, then the block that carries it; the block says
       // when it is over, the duration here is only the fallback for a bus
-      // that never gets to play it
+      // that never gets to play it. The ROM reports the header as it has it.
       {id: 'pilot', duration: 3000},
       {id: 'data', duration: 100},
-      {id: 'pause', duration: 800},
+      {id: 'pause', duration: 800, event: {id: 'showBytesHeader'}},
       {id: 'pilot', duration: 1500},
       {id: 'data', duration: 60000, sound: 'tapeScreenDataSound'},
 
       // the game: header, then the block. Standard speed, nothing exotic —
       // cut short because 8192 bytes are three quarters of a minute and the
       // picture is already there
-      {id: 'pause', duration: 1000},
+      {id: 'pause', duration: 1000, event: {id: 'setBreakLine', value: '1:17'}},
       {id: 'pilot', duration: 3000},
       {id: 'data', duration: 100},
       {id: 'pause', duration: 800},
@@ -219,20 +229,47 @@ export class TapeLoadingModel extends AbstractModel {
         return true;
 
       case 'showLoadingMessage':
-        // ★ what the original's BASIC prints before it loads the picture:
-        // JETPAC IS LOADING at row 9 column 7 and a flashing PLEASE WAIT at
-        // row 12 column 10, bright white on black (tape_layout.md)
+        // ★ the BASIC loader runs: PAPER 0: INK 7: BRIGHT 1: CLS, then
+        // JETPAC IS LOADING at 9,7 and PLEASE WAIT in INVERSE at 12,10. It is
+        // printed into the video memory, not over it, because the picture's
+        // bytes overwrite it as they come in. The lower screen keeps BORDCR
+        // ($38, black on white) and the border stays white: the loader has
+        // no BORDER (simulator, see the class comment)
         if (this.programNameEntity) {
           this.programNameEntity.destroy();
           this.programNameEntity = null;
         }
-        this.borderEntity.bkColor = ZXColor.black;
-        this.desktopEntity.bkColor = ZXColor.black;
         this.inputLineEntity.hide = true;
-        this.loadingMessageEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, 7*8, 9*8, 18*8, 8, 'JETPAC IS LOADING', ZXColor.brightWhite, ZXColor.black, {leftMargin: 0});
-        this.desktopEntity.addEntity(this.loadingMessageEntity);
-        this.waitMessageEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, 10*8, 12*8, 11*8, 8, 'PLEASE WAIT', ZXColor.brightWhite, ZXColor.black, {leftMargin: 0, flash: true});
-        this.desktopEntity.addEntity(this.waitMessageEntity);
+        this.screenEntity = new ZXVideoRAMEntity(this.desktopEntity, 0, 0);
+        this.screenEntity.clear(0, 0x47);
+        this.screenEntity.videoRAM.fillAttributes(
+          {row: ZXVideoRAM.ROWS-2, col: 0, rows: 2, cols: ZXVideoRAM.COLS}, ZXVideoRAM.BLANK_ATTRIBUTE);
+        this.romPrint = new ZXRomPrint(this.screenEntity.videoRAM, 0x47);
+        this.romPrint.print('\x16\x09\x07JETPAC IS LOADING\x16\x0c\x0a\x14\x01PLEASE WAIT\x14\x00');
+        this.screenEntity.invalidate();
+        this.desktopEntity.addEntity(this.screenEntity);
+        // the input line has to print over the screen when BREAK comes, and
+        // it prints in the lower screen's colours: black ink on white paper
+        var entities = this.desktopEntity.entities;
+        entities.push(entities.splice(entities.indexOf(this.inputLineEntity), 1)[0]);
+        this.tapeBreakLine = '1:13';
+        this.inputLineEntity.setPenColor(ZXColor.black);
+        this.inputLineEntity.setBkColor(ZXColor.white);
+        return true;
+
+      case 'setBreakLine':
+        this.tapeBreakLine = event.value;
+        return true;
+
+      case 'showBytesHeader':
+        // ★ the ROM reports the SCREEN$ header after PRINT AT 0,0, and it
+        // lands on row 2, column 0, in the loader's colours ($47) — measured
+        // in the simulator, not reasoned out
+        if (this.romPrint && !this.tapeBreak) {
+          this.romPrint.at(2, 0);
+          this.romPrint.print('Bytes: JPSP');
+          this.screenEntity.invalidate();
+        }
         return true;
 
       case 'tapeByte':
@@ -247,46 +284,6 @@ export class TapeLoadingModel extends AbstractModel {
         if (!this.tapeBreak) {
           this.cancelEvent('updateTape');
           this.sendEvent(0, {id: 'updateTape'});
-        }
-        return true;
-
-      case 'showLoadingScreen':
-        var loading = this.loadDataFile('loading');
-        if (loading) {
-          if (this.programNameEntity) {
-            this.programNameEntity.destroy();
-            this.programNameEntity = null;
-          }
-          if (this.loadingMessageEntity) {
-            this.loadingMessageEntity.destroy();
-            this.loadingMessageEntity = null;
-          }
-          if (this.waitMessageEntity) {
-            this.waitMessageEntity.destroy();
-            this.waitMessageEntity = null;
-          }
-          // empty video memory to begin with — white paper, black ink, the
-          // state the machine is in when the header has gone by; the bytes
-          // themselves arrive one at a time with the block that follows
-          this.screenEntity = new ZXVideoRAMEntity(this.desktopEntity, 0, 0);
-          this.screenEntity.clear(0, ZXVideoRAM.BLANK_ATTRIBUTE);
-          // the lower screen — the two lines BASIC keeps for itself — is
-          // black on black before the picture comes
-          this.screenEntity.videoRAM.fillAttributes(
-            {row: ZXVideoRAM.ROWS-2, col: 0, rows: 2, cols: ZXVideoRAM.COLS}, 0);
-          this.screenEntity.invalidate();
-          this.desktopEntity.addEntity(this.screenEntity);
-          // the input line has to print over the picture when BREAK comes
-          var entities = this.desktopEntity.entities;
-          entities.push(entities.splice(entities.indexOf(this.inputLineEntity), 1)[0]);
-          this.tapeBreakLine = '10:7';
-          // and it prints the way the running program has the lower screen
-          // set: white ink on black paper
-          this.inputLineEntity.setPenColor(ZXColor.white);
-          this.inputLineEntity.setBkColor(ZXColor.black);
-          // BORDER 0 — the program sets the border black before it loads on
-          this.borderEntity.bkColor = ZXColor.black;
-          this.desktopEntity.bkColor = ZXColor.black;
         }
         return true;
 
