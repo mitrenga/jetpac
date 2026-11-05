@@ -164,14 +164,17 @@ export class GameApp extends AbstractApp {
       // here there are fewer actions than anywhere — left, right, thrust,
       // laser — so there is no reason to wait.
       //
-      // One half of the screen is a **stick** — left, right and up for the
-      // thrust, because Jetman has no "down": he falls on his own — the other
-      // a **laser button**. Which half is which is the left-handed /
-      // right-handed choice in SETTINGS; that is all `types` says.
+      // One half of the screen is a **stick** — left and right only — the
+      // other a **thrust button**. There is no brake on a touchscreen, and
+      // the laser fires by itself all the time (GameModel.autoFire), so
+      // a thumb on each half is the whole game. Which half is which is the
+      // left-handed / right-handed choice in SETTINGS; that is all `types`
+      // says — its keys keep the old names (`leftLaser`, `rightLaser`) for
+      // the cookies already saved, the half named `laser` is the button.
       touchscreen: {
         device: 'touchscreen',
         types: {
-          // ★ default is the laser on the left and the stick on the right;
+          // ★ default is the button on the left and the stick on the right;
           // the first key is also the fallback for a broken cookie
           keys: [
             'leftLaser',
@@ -191,21 +194,21 @@ export class GameApp extends AbstractApp {
         // the half happens to be — a phone gets the same thing upright and on
         // its side.
         halves: {
-          // ★ the stick is **horizontal only**: Jetman has no "down", he
-          // falls on his own, and up is the thrust, which is held rather than
-          // steered — so pushing the stick up sets the thrust
+          // ★ the stick is **horizontal only**: up and down do nothing on
+          // a touchscreen — the thrust has a button of its own and the brake
+          // is left out
           stick: {
             icon: 'stick',
             zones: [
-              {rect: [0, 0, 1, 1], type: 'joystick', control: 'both',
-               actions: {left: 'left', right: 'right', up: 'thrust', down: 'brake'}}
+              {rect: [0, 0, 1, 1], type: 'joystick', control: 'horizontal',
+               actions: {left: 'left', right: 'right'}}
             ]
           },
           laser: {
             icon: 'laser',
             zones: [
-              // the laser is held, like the whole middle row of the keyboard
-              {rect: [0, 0, 1, 1], type: 'button', action: 'fire'}
+              // the thrust is held, like the whole top row of the keyboard
+              {rect: [0, 0, 1, 1], type: 'button', action: 'thrust'}
             ]
           }
         },
@@ -216,44 +219,16 @@ export class GameApp extends AbstractApp {
         // how far the finger has to move before the stick changes direction
         joystickStep: 10,
         icons: {
-          // the four arrows for the stick are a control glyph of the svision
-          // family (the same one the sibling remakes use), and so is the
-          // fire button, taken from R-Type
+          // the stick is left and right only, so its icon is the left-right
+          // arrows of Manic Miner (manicminer/app/gameApp.js), and the button
+          // is the fire button of R-Type (here it is the thrust)
           stick: {
-            compressedSpriteData: 'lP101300N0E2P0111030Z051012320B0P020N0601234561718191AB9BCDB1BDCB9BA19181716543210'
+            compressedSpriteData: 'lP101300N08B701050P020N06910121213421245641465421243121217'
           },
           laser: {
-            // the fire button of the sibling remake R-Type (r-type/app/mainApp.js):
-            // a ring with a ring inside, on the same 39x23 canvas as the stick
-            // glyph; a readable grid, `-` transparent, `#` pen colour
-            // (setGameControlIcons takes this shape as well as
-            // compressedSpriteData)
-            width: 39, height: 23, frames: 1, directions: 1,
-            sprite: [[
-              '---------------------------------------',
-              '---------------------------------------',
-              '----------------#######----------------',
-              '--------------###########--------------',
-              '-------------####-----####-------------',
-              '------------###---------###------------',
-              '-----------###-----------###-----------',
-              '-----------##-----###-----##-----------',
-              '----------###---#######---###----------',
-              '----------##----#-----#----##----------',
-              '----------##---##-----##---##----------',
-              '----------##---##-----##---##----------',
-              '----------##---##-----##---##----------',
-              '----------##----#-----#----##----------',
-              '----------###---#######---###----------',
-              '-----------##-----###-----##-----------',
-              '-----------###-----------###-----------',
-              '------------###---------###------------',
-              '-------------####-----####-------------',
-              '--------------###########--------------',
-              '----------------#######----------------',
-              '---------------------------------------',
-              '---------------------------------------'
-            ]]
+            // the fire button of the sibling remake R-Type (r-type/app/mainApp.js),
+            // the thrust here: a ring with a ring inside, 39x23
+            compressedSpriteData: 'lP101300N0G2M070U0B0R04050P03090N0M020L0K01012345657898A838BC686CD88188EC5F6F5CEC8C6C8CEC8C6C8CEC8C6C8CEC5F6F5CE88188DC686CB838A898756543210'
           }
         }
       }

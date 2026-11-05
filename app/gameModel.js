@@ -58,6 +58,8 @@ export class GameModel extends AbstractModel {
     this.needDraw = true;
     // a touch that is shorter than one pass of the worker has to be held
     this.heldTaps = {};
+    // the last control state sent to the worker (sendControls)
+    this.sentControls = false;
   } // constructor
 
   /**
@@ -157,6 +159,8 @@ export class GameModel extends AbstractModel {
         seed: (Date.now() & 0xFFFF)
       }
     });
+    // the laser of a touchscreen fires from the start (autoFire)
+    this.sendControls();
   } // initData
 
   shutdown() {
@@ -221,8 +225,35 @@ export class GameModel extends AbstractModel {
       return;
     }
     this.controlsState[action] = value;
-    this.sendWorkerMessage(Object.assign({id: 'controls'}, this.controlsState));
+    this.sendControls();
   } // setControl
+
+  /**
+   * ★ On a touchscreen the laser fires by itself, all the time: the two
+   * halves of the screen are the stick and the thrust, and a third thumb
+   * there is not. It is on as soon as the device is a touchscreen
+   * (`controls.touchscreen.supported` — a coarse pointer, or the first touch).
+   * @returns {boolean}
+   */
+  autoFire() {
+    return !!this.app.controls.touchscreen.supported;
+  } // autoFire
+
+  /**
+   * Sends the whole control state to the worker, the laser held by
+   * {@link autoFire} on a touchscreen. Only when it changed since the last
+   * message.
+   */
+  sendControls() {
+    var state = Object.assign({}, this.controlsState);
+    state.fire = state.fire || this.autoFire();
+    var key = JSON.stringify(state);
+    if (key === this.sentControls) {
+      return;
+    }
+    this.sentControls = key;
+    this.sendWorkerMessage(Object.assign({id: 'controls'}, state));
+  } // sendControls
 
   handleEvent(event) {
     if (super.handleEvent(event)) {
@@ -537,6 +568,9 @@ export class GameModel extends AbstractModel {
    * @param {Object} entity - The half of the screen.
    */
   touchStart(event, side, entity) {
+    // the first touch is what makes a device a touchscreen: from now on the
+    // laser fires by itself (autoFire)
+    this.sendControls();
     var zone = this.touchZone(event, side, entity);
     var control = {side: side, entity: entity, action: false,
                    type: zone === false ? 'none' : zone.type,
