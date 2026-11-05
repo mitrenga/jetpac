@@ -213,6 +213,7 @@ export class MenuModel extends AbstractModel {
     this.titleEntity = null;
     this.subtitleEntity = null;
     this.versionEntity = null;
+    this.remakeEntity = null;
     this.menuEntity = null;
     this.newVersionAvailable = false;
     // the window of the dialog open from the menu (openDialog), while it lasts
@@ -266,21 +267,24 @@ export class MenuModel extends AbstractModel {
       this.desktopEntity.addEntity(new TextEntity(this.desktopEntity, this.app.fonts.fonts5x5, 8, 8*8+16, this.desktopWidth-16, 40,
         'GAME DATA MISSING (data/sprites.json). RUN tools/dumpsprites.py.', ZXColor.brightGreen, false, {align: 'center', textWrap: true}));
     }
-    // below the panel: cells 4-27 x 5-20, 4 px kept free on either side
-    this.menuEntity = new MenuEntity(this.desktopEntity, 36, 42, 184, 126, this.desktopEntity.bkColor, this.menuOptions, this, this.getMenuData);
+    // below the panel: cells 4-27 x 2-17, 4 px kept free on either side
+    this.menuEntity = new MenuEntity(this.desktopEntity, 36, 18, 184, 126, this.desktopEntity.bkColor, this.menuOptions, this, this.getMenuData);
     this.desktopEntity.addEntity(this.menuEntity);
 
-    // the version, centred in the ZX font on row 22; still a button, because
+    // the version, centred in the ZX font on row 19; still a button, because
     // a newer version on the server turns it into UPGRADE !
     var versionText = 'v'+this.app.version;
     var versionWidth = 14*8;                            // fourteen cells, centred
-    this.versionEntity = new ButtonEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, (this.desktopWidth-versionWidth)/2, 176, versionWidth, 8, versionText, {id: 'upgradeApp'}, [], ZXColor.brightWhite, ZXColor.black, {align: 'center'});
+    this.versionEntity = new ButtonEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, (this.desktopWidth-versionWidth)/2, 19*8, versionWidth, 8, versionText, {id: 'upgradeApp'}, [], ZXColor.brightWhite, ZXColor.black, {align: 'center'});
     this.desktopEntity.addEntity(this.versionEntity);
     // suppress the hover/click colors resolved in init(), so the button always
     // looks like plain text
     this.versionEntity.hoverColor = false;
     this.versionEntity.clickColor = false;
     this.checkServerVersion();
+    // the remake's own line on the bottom row, in white, as in Manic Miner
+    this.remakeEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8, 0, 23*8, this.desktopWidth, 8, this.app.copyright, ZXColor.white, false, {align: 'center'});
+    this.desktopEntity.addEntity(this.remakeEntity);
 
 
     // Menu je **němé**, a to schválně: prohlížeč pustí zvuk až po gestu
@@ -368,7 +372,12 @@ export class MenuModel extends AbstractModel {
     // while the dialog is open the bottom band shows the copyright line of the
     // original's screen instead of the version, like the hall of fame and the
     // about screen do; the version comes back when the dialog closes
-    // (handleEvent, 'destroy' of the window)
+    // (handleEvent, 'destroy' of the window). The version sits on row 19,
+    // which the dialogs cover, so the copyright line goes down to row 23 in
+    // place of the remake's line, as on the about and hall of fame screens,
+    // and showVersion() brings both back
+    this.versionEntity.y = 23*8;
+    this.remakeEntity.hide = true;
     this.versionEntity.setText('©1983 A.C.G.');
     this.versionEntity.setPenColor(ZXColor.brightWhite);
   } // openDialog
@@ -378,6 +387,8 @@ export class MenuModel extends AbstractModel {
    * in red when the server has a newer one.
    */
   showVersion() {
+    this.versionEntity.y = 19*8;
+    this.remakeEntity.hide = false;
     if (this.newVersionAvailable) {
       this.versionEntity.setText('UPGRADE !');
       this.versionEntity.setPenColor(ZXColor.brightRed);

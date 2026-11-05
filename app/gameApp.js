@@ -67,7 +67,7 @@ export class GameApp extends AbstractApp {
     };
 
     this.version = Version;
-    this.copyright = '© 2026␣Libor␣Mitrenga,▭CC␣BY⋅NC⋅SA␣4.0';
+    this.copyright = 'Remake by L. Mitrenga, CC␣BY⋅NC⋅SA';
     this.devModeName = devModeName;
     this.appIconSprite = appIconSprite;
 

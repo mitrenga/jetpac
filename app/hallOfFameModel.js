@@ -13,10 +13,10 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
 /**
  * HALL OF FAME as a screen of its own, in the same shape as aboutModel.js:
  * the original's menu screen (black with the panel on it,
- * GameAreaEntity.panelScreen) with the copyright line on row 22, and
+ * GameAreaEntity.panelScreen) with the copyright line on row 23, and
  * the table below the panel, all of its width, in the proportional ROM font —
  * the heading one empty row below the score row (row 3), one more empty row,
- * ten places from row 5 and CLOSE just above the copyright line on row 22.
+ * ten places from row 5 and CLOSE above the copyright line on row 23.
  * Silent like the menu.
  *
  * ★ **The original has no hall of fame** (ZADANI chap. 10/4): only the HI in
@@ -45,7 +45,7 @@ export class HallOfFameModel extends AbstractModel {
     this.nameEntities = [];
 
     // the table under the panel, all of its width: rows 3-21, the same frame
-    // as the about text (aboutModel.js), above the copyright line on row 22
+    // as the about text (aboutModel.js), above the copyright line on row 23
     this.panelX = 0;
     this.panelY = 3*8;
     this.panelWidth = 32*8;
@@ -90,11 +90,11 @@ export class HallOfFameModel extends AbstractModel {
       // the JETPAC logo where the original prints 2UP (ZADANI.md §10/9), as
       // on the menu and in the game
       this.desktopEntity.addEntity(new JetpacLogoEntity(this.desktopEntity));
-      // the copyright line as the menu shows it under its dialogs: on row 22,
-      // where the menu has its version, fourteen cells wide and centred, in
+      // the copyright line as the menu shows it under its dialogs: on row 23,
+      // in place of the remake's line, fourteen cells wide and centred, in
       // the ZX font, bright white (menuModel.openDialog)
       var copyrightWidth = 14*8;
-      this.copyrightEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, (this.desktopWidth-copyrightWidth)/2, 22*8, copyrightWidth, 8, '©1983 A.C.G.', ZXColor.brightWhite, ZXColor.black, {align: 'center'});
+      this.copyrightEntity = new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8Mono, (this.desktopWidth-copyrightWidth)/2, 23*8, copyrightWidth, 8, '©1983 A.C.G.', ZXColor.brightWhite, ZXColor.black, {align: 'center'});
       this.desktopEntity.addEntity(this.copyrightEntity);
     } else {
       this.desktopEntity.addEntity(new TextEntity(this.desktopEntity, this.app.fonts.zxFonts8x8, 0, 8*8, this.desktopWidth, 8, 'JETPAC', ZXColor.brightWhite, false, {align: 'center'}));
