@@ -263,7 +263,7 @@ export class GameModel extends AbstractModel {
     switch (event.id) {
 
       case 'exitGame':
-        this.app.setModel('MenuModel');
+        this.app.setModel('GameExitModel');
         return true;
 
       case 'changeFlashState':
@@ -362,7 +362,7 @@ export class GameModel extends AbstractModel {
     }
     this.sendWorkerMessage({id: 'pause'});
     this.sendEvent(0, {id: 'pauseAllAudioBuses'});
-    this.desktopEntity.addModalEntity(new PauseGameEntity(this.desktopEntity, 48, 64, 160, 72, 'PAUSE GAME', 'MenuModel'));
+    this.desktopEntity.addModalEntity(new PauseGameEntity(this.desktopEntity, 48, 64, 160, 72, 'PAUSE GAME', 'GameExitModel'));
   } // pauseGame
 
   handleWorkerMessage(event) {
