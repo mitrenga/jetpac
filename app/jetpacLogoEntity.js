@@ -11,10 +11,10 @@ const { ZXColor } = await import('./svision/js/platform/canvas2D/zx/zxColor.js?v
  * no font of the zx-fonts collection, so it lives here as a grid rather than
  * in a font table. It is **not** on the original's eight-pixel character
  * pitch — the gaps between the letters are the picture's own, one pixel
- * each, and JET and PAC are joined with the same gap (the picture leaves
- * a word space there).
+ * each, and JET and PAC are two pixels apart (the picture leaves a whole
+ * word space there).
  *
- * Forty-eight by seven pixels. The top four rows are bright cyan and the bottom three bright red,
+ * Forty-nine by seven pixels. The top four rows are bright cyan and the bottom three bright red,
  * and the logo sits at `y = 4`, so the colour changes exactly on the boundary
  * of character rows 0 and 1 — the way an attribute cell would have to.
  */
@@ -39,13 +39,13 @@ export class JetpacLogoEntity extends SpriteEntity {
       frames: 1, directions: 1,
       colors: {c: ZXColor.brightCyan, r: ZXColor.brightRed},
       sprite: [[
-        'ccccccc-ccccccc-ccccccc-cccccc----cccccc--cccccc',
-        'ccccccc-cccccc--ccccccc-ccccccc--ccccccc-cccccc-',
-        '--ccc---ccc-------ccc---ccc-ccc--ccc-ccc-ccc----',
-        '--ccc---ccccc-----ccc---ccccccc-cccccccc-ccc----',
-        '--rrr---rrr-------rrr---rrrrrr--rrrrrrrr-rrr----',
-        'rrrrr---rrrrrr----rrr---rrr----rrr---rrr-rrrrrr-',
-        'rrrr----rrrrrrr---rrr---rrr----rrr---rrr--rrrrrr'
+        'ccccccc-ccccccc-ccccccc--cccccc----cccccc--cccccc',
+        'ccccccc-cccccc--ccccccc--ccccccc--ccccccc-cccccc-',
+        '--ccc---ccc-------ccc----ccc-ccc--ccc-ccc-ccc----',
+        '--ccc---ccccc-----ccc----ccccccc-cccccccc-ccc----',
+        '--rrr---rrr-------rrr----rrrrrr--rrrrrrrr-rrr----',
+        'rrrrr---rrrrrr----rrr----rrr----rrr---rrr-rrrrrr-',
+        'rrrr----rrrrrrr---rrr----rrr----rrr---rrr--rrrrrr'
       ]]
     });
   } // constructor
