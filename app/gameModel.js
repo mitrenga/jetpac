@@ -61,8 +61,8 @@ export class GameModel extends AbstractModel {
   } // constructor
 
   /**
-   * The game's own border: no X in it (the pause menu opens from the panel),
-   * but on a touchscreen the two halves of the screen are the controls, so the
+   * The game's own border: the X in its corner opens the pause menu, as in
+   * Manic Miner, and on a touchscreen the two halves of the screen are the controls, so the
    * border carries them and their icons. Without this the model gets the
    * plain AbstractEntity of AbstractModel, and showTouchIcons() then dies on
    * `setGameControlIcons is not a function` — on phones only, which is why a
@@ -70,7 +70,8 @@ export class GameModel extends AbstractModel {
    * @returns {BorderEntity}
    */
   newBorderEntity() {
-    return new BorderEntity(false, this.app.controls.touchscreen.supported);
+    // the X sends keyPress Escape → pauseGame, for the mouse and the touchscreen
+    return new BorderEntity(true, this.app.controls.touchscreen.supported);
   } // newBorderEntity
 
   init() {

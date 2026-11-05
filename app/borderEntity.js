@@ -42,8 +42,8 @@ export class BorderEntity extends AbstractEntity {
 
     this.leftControlEntity = null;
     this.rightControlEntity = null;
-    // Ikona toho, co která polovina obrazovky dělá: osmisměrná páčka na jedné
-    // a meč na druhé. Kreslí se **jen do okraje**, ne přes hrací plochu.
+    // Ikona toho, co která polovina obrazovky dělá: páčka na jedné
+    // a laser na druhé. Kreslí se **jen do okraje**, ne přes hrací plochu.
     this.leftIconEntity = null;
     this.rightIconEntity = null;
     this.gameControlIcons = false;
