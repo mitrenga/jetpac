@@ -217,19 +217,42 @@ export class GameApp extends AbstractApp {
         joystickStep: 10,
         icons: {
           // the four arrows for the stick are a control glyph of the svision
-          // family (the same one the sibling remakes use); the laser is
-          // a shot of the game's own
+          // family (the same one the sibling remakes use), and so is the
+          // fire button, taken from R-Type
           stick: {
             compressedSpriteData: 'lP101300N0E2P0111030Z051012320B0P020N0601234561718191AB9BCDB1BDCB9BA19181716543210'
           },
           laser: {
-            // the laser shot: one row of pixels thickening towards its head,
-            // drawn by hand; a readable grid, `-` transparent, `#` pen colour
+            // the fire button of the sibling remake R-Type (r-type/app/mainApp.js):
+            // a ring with a ring inside, on the same 39x23 canvas as the stick
+            // glyph; a readable grid, `-` transparent, `#` pen colour
             // (setGameControlIcons takes this shape as well as
             // compressedSpriteData)
-            width: 36, height: 1, frames: 1, directions: 1,
+            width: 39, height: 23, frames: 1, directions: 1,
             sprite: [[
-              '#-#-##--##--####----####----########'
+              '---------------------------------------',
+              '---------------------------------------',
+              '----------------#######----------------',
+              '--------------###########--------------',
+              '-------------####-----####-------------',
+              '------------###---------###------------',
+              '-----------###-----------###-----------',
+              '-----------##-----###-----##-----------',
+              '----------###---#######---###----------',
+              '----------##----#-----#----##----------',
+              '----------##---##-----##---##----------',
+              '----------##---##-----##---##----------',
+              '----------##---##-----##---##----------',
+              '----------##----#-----#----##----------',
+              '----------###---#######---###----------',
+              '-----------##-----###-----##-----------',
+              '-----------###-----------###-----------',
+              '------------###---------###------------',
+              '-------------####-----####-------------',
+              '--------------###########--------------',
+              '----------------#######----------------',
+              '---------------------------------------',
+              '---------------------------------------'
             ]]
           }
         }
