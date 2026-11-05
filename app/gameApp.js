@@ -217,20 +217,17 @@ export class GameApp extends AbstractApp {
         joystickStep: 10,
         icons: {
           // the four arrows for the stick are a control glyph of the svision
-          // family (the same one the sibling remakes use); the laser is the
-          // game's own
+          // family (the same one the sibling remakes use); the laser is
+          // a shot of the game's own
           stick: {
             compressedSpriteData: 'lP101300N0E2P0111030Z051012320B0P020N0601234561718191AB9BCDB1BDCB9BA19181716543210'
           },
           laser: {
-            // ★ the picture of the app icon (images/app-icon.svg) in one
-            // colour: Jetman as the original draws him ($7AA2) and his shot
-            // to the right, one icon pixel per sprite pixel. On the same 39x23
-            // canvas as the stick glyph so both icons take the same room in
-            // the border; a readable grid, `-` transparent, `#` pen colour
+            // the laser shot: one row of pixels thickening towards its head,
+            // drawn by hand; a readable grid, `-` transparent, `#` pen colour
             // (setGameControlIcons takes this shape as well as
-            // compressedSpriteData).
-            width: 39, height: 23, frames: 1, directions: 1,
+            // compressedSpriteData)
+            width: 36, height: 1, frames: 1, directions: 1,
             sprite: [[
               '#-#-##--##--####----####----########'
             ]]
