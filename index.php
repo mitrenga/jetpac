@@ -1,5 +1,5 @@
 <?php
-  $appName = 'JET PAC';
+  $appName = 'JETPAC';
   $appDescription = 'Play JETPAC online for free in your browser. Faithful remake of the 1983 Ultimate Play The Game ZX Spectrum classic, no download required.';
   $appPrefix = 'jp';
   $appNoscript =

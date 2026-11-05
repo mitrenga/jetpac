@@ -1,6 +1,6 @@
 ![](/images/app-icon-256x256.png)
 
-JET PAC
+JETPAC
 =====================
 The 1983 classic, reborn for modern web browsers.
 
