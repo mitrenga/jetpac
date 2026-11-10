@@ -152,13 +152,6 @@ export class MenuModel extends AbstractModel {
       waitForAudioEvent: {frameColor: ZXColor.black, bkColor: ZXColor.brightYellow, theme: {penColor: ZXColor.black}}
     });
 
-    // the player name dialog: the same black window, but the keys of its
-    // keyboard bright white and a held CAPS SHIFT / SYMBOL SHIFT bright
-    // yellow; the other dialogs keep the menu's. The window is a row taller at either end (34-176 instead of
-    // 42-168): the title goes a row up, CANCEL / OK a row down, and the
-    // keyboard, centred between them, stays where it was. A plain deep merge
-    // over the menu's properties: ZXDialogProperties.merge would fill them
-    // in from the ZX defaults again (the yellow window of Manic Miner)
     // the settings and the volume dialogs: the window from row 3 to row 22
     // (24-176), so that the title is where the hall of fame and the about
     // screen have their heading and the bottom buttons end at 174, as their
@@ -201,10 +194,20 @@ export class MenuModel extends AbstractModel {
       theme: {labelFont: 'zxFonts8x8'}
     });
 
+    // the player name dialog: the same black window, but the keys of its
+    // keyboard bright white and a held CAPS SHIFT / SYMBOL SHIFT bright
+    // yellow; the other dialogs keep the menu's. The window is rows 3-22
+    // (24-176) like the settings and the volume dialogs, so the title is where
+    // theirs is and CANCEL / OK end where their buttons do. The prompt, the
+    // input and the keyboard, centred between the top and the buttons, are
+    // moved 5 px down to stay where the window of 34-176 had them. A plain
+    // deep merge over the menu's properties: ZXDialogProperties.merge would
+    // fill them in from the ZX defaults again (the yellow window of Manic Miner)
     this.playerNameProperties = DialogTheme.mergeDeep(this.dialogProperties, {
-      y: 34,
-      height: 142,
+      y: 24,
+      height: 152,
       theme: {
+        inputBlockShift: 5,
         keyboardButtonsBkColor: ZXColor.brightWhite,
         keyboardButtonsShiftColor: ZXColor.brightYellow
       }
